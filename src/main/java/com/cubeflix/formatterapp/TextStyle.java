@@ -13,9 +13,17 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 public class TextStyle {
     public PDFont family;
     public float size;
+    public float spacing;
     
     TextStyle(PDFont family, float size) {
         this.family = family;
         this.size = size;
+        this.spacing = family.getSpaceWidth();
+    }
+    
+    TextStyle(PDFont family, float size, float spacing) {
+        this.family = family;
+        this.size = size;
+        this.spacing = spacing;
     }
 }

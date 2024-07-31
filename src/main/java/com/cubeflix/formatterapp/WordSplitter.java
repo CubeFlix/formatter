@@ -17,13 +17,13 @@ public class WordSplitter {
     private String delimeter = "\\s+";
     private Pattern whitespacePattern;
     private Paragraph paragraph;
-    private List<List<TextRun>> words = new ArrayList<>();
+    private List<Word> words = new ArrayList<>();
 
     public String getDelimeter() {
         return delimeter;
     }
 
-    public List<List<TextRun>> getWords() {
+    public List<Word> getWords() {
         return words;
     }
     
@@ -41,27 +41,33 @@ public class WordSplitter {
     }
     
     public void split() {
-        List<TextRun> lastWord = null;
+        Word lastWord = null;
         for (int i = 0; i < this.paragraph.runs.length; i++) {
-            List<TextRun> fragments = this.splitRun(paragraph.runs[i]);
+            TextRun run = paragraph.runs[i];
+            List<TextRun> fragments = this.splitRun(run);
+            int numOriginalFragments = fragments.size();
             
             // Join up the first fragment with the last fragment of the previous 
             // run. This way if there are words spanning multiple runs, they 
             // will be concatenated into a single word.
+            boolean ateFirstFragment = false;
             if (lastWord != null) {
                 // If the run starts with whitespace, the last word should be 
                 // pushed without ever adding the first fragment.
-                if (this.startsWithWhitespace(paragraph.runs[i].text)) {
+                if (this.startsWithWhitespace(run.text)) {
+                    lastWord.spaceAfter = false;
                     this.words.add(lastWord);
                     lastWord = null;
                 } else {
-                    lastWord.add(fragments.remove(0));
+                    ateFirstFragment = true;
+                    lastWord.runs.add(fragments.remove(0));
                     // If there was more than one fragment in this run, or if 
                     // there's only one fragment and it ends in whitespace, we 
                     // can push this word.
-                    if (fragments.size() > 0 || 
-                            (fragments.size() == 0 && 
-                            this.endsWithWhitespace(paragraph.runs[i].text))) {
+                    if (!fragments.isEmpty() || 
+                            (fragments.isEmpty() && 
+                            this.endsWithWhitespace(run.text))) {
+                        lastWord.spaceAfter = true;
                         this.words.add(lastWord);
                         lastWord = null;
                     }
@@ -75,20 +81,34 @@ public class WordSplitter {
             // Add everything except for the last fragment, since it might need
             // to become the new lastWord.
             for (int j = 0; j < fragments.size() - 1; j++) {
-                List<TextRun> word = new ArrayList<>();
-                word.add(fragments.get(j));
-                this.words.add(word);
+                List<TextRun> wordRuns = new ArrayList<>();
+                wordRuns.add(fragments.get(j));
+                boolean spaceAfter = true;
+                boolean spaceBefore = false;
+                if (j == 0 
+                        && !ateFirstFragment
+                        && this.startsWithWhitespace(run.text)) {
+                    spaceBefore = true;
+                }
+                this.words.add(new Word(wordRuns, spaceBefore, spaceAfter));
             }
             
             // If the run ends with whitespace, push the last fragment as its
             // own word, otherwise set lastWord.
             if (this.endsWithWhitespace(paragraph.runs[i].text)) {
-                List<TextRun> word = new ArrayList<>();
-                word.add(fragments.getLast());
-                this.words.add(word);
+                List<TextRun> wordRuns = new ArrayList<>();
+                wordRuns.add(fragments.getLast());
+                this.words.add(new Word(wordRuns, false, true));
             } else {
-                lastWord = new ArrayList<>();
-                lastWord.add(fragments.getLast());
+                boolean spaceBefore = false;
+                if (numOriginalFragments == 1 && 
+                        this.startsWithWhitespace(run.text)) {
+                    // This is the only fragment, and it starts with whitespace,
+                    // so add a space before.
+                    spaceBefore = true;
+                }
+                lastWord = new Word(new ArrayList<>(), spaceBefore, false);
+                lastWord.runs.add(fragments.getLast());
             }
         }
         

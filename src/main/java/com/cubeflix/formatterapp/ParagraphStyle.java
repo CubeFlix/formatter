@@ -10,12 +10,10 @@ package com.cubeflix.formatterapp;
  */
 public class ParagraphStyle {
     public float leading;
-    public float spaceWidth;
     public ParagraphAlignment alignment;
     
     ParagraphStyle(float leading, float spaceWidth, ParagraphAlignment alignment) {
         this.leading = leading;
-        this.spaceWidth = spaceWidth;
         this.alignment = alignment;
     }
 }

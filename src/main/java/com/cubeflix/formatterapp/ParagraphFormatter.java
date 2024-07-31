@@ -6,7 +6,6 @@ package com.cubeflix.formatterapp;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -16,8 +15,7 @@ import java.util.List;
 public class ParagraphFormatter {
     private Paragraph paragraph;
     private ParagraphLayout layout;
-    private List<List<TextRun>> words;
-    private List<WordSize> calculatedWordSizes;
+    private List<Word> words;
     private List<LineFormatter> lineFormatters;
     
     ParagraphFormatter(Paragraph paragraph, ParagraphLayout layout) {
@@ -31,53 +29,24 @@ public class ParagraphFormatter {
         this.words = splitter.getWords();
     }
     
-    private static float calculateWordWidth(List<TextRun> word) throws IOException {
-        float width = 0;
-        for (TextRun run : word) {
-            width += run.style.family.getStringWidth(run.text) * 
-                    run.style.size;
-        }
-        return width;
-    }
-    
-    private static float calculateWordHeight(List<TextRun> word) {
-        float height = 0;
-        for (TextRun run : word) {
-            height = Math.max(height, 
-                    run.style.family.getFontDescriptor().getAscent() + 
-                            run.style.family.getFontDescriptor().getDescent());
-        }
-        return height;
-    }
-    
+        
     private void calculateWordSizes() throws IOException {
-        this.calculatedWordSizes = new ArrayList<>();
-        for (List<TextRun> word : this.words) {
-            float height = this.calculateWordHeight(word);
-            float width = this.calculateWordWidth(word);
-            this.calculatedWordSizes.add(new WordSize(height, width));
+        for (Word word : this.words) {
+            word.calculateWordSize();
         }
     }
     
     public LineFormatter fitWordsOnLine() {
         float widthUsed = 0;
-        List<List<TextRun>> words = new ArrayList<>();
-        List<WordSize> calculatedWordSizes = new ArrayList<>();
+        List<Word> words = new ArrayList<>();
         while (widthUsed < this.layout.getWidth() &&
                 !this.words.isEmpty()) {
-            if (widthUsed != 0) {
-                // If there's already words in this line, add the width for
-                // spaces.
-                widthUsed += this.paragraph.style.spaceWidth;
-            }
-            words.add(this.words.removeFirst());
-            WordSize wordSize = this.calculatedWordSizes.removeFirst();
-            calculatedWordSizes.add(wordSize);
-            widthUsed += wordSize.width;
+            Word word = this.words.removeFirst();
+            words.add(word);
+            widthUsed += word.getCalculatedSize().width;
         }
         
         LineFormatter formatter = new LineFormatter(words, 
-            calculatedWordSizes,
             this.paragraph.style);
         return formatter;
     }

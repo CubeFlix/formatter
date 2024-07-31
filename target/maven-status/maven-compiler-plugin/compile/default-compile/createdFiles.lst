@@ -1,0 +1,14 @@
+com\cubeflix\formatterapp\Word.class
+com\cubeflix\formatterapp\FormatterApp.class
+com\cubeflix\formatterapp\TextRun.class
+com\cubeflix\formatterapp\TextStyle.class
+com\cubeflix\formatterapp\WordSize.class
+com\cubeflix\formatterapp\ParagraphFormatter.class
+com\cubeflix\formatterapp\ParagraphAlignment.class
+com\cubeflix\formatterapp\Coordinate.class
+com\cubeflix\formatterapp\LineFormatter.class
+com\cubeflix\formatterapp\FormattedLine.class
+com\cubeflix\formatterapp\ParagraphStyle.class
+com\cubeflix\formatterapp\WordSplitter.class
+com\cubeflix\formatterapp\Paragraph.class
+com\cubeflix\formatterapp\ParagraphLayout.class

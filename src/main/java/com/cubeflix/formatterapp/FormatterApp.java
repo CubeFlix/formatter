@@ -32,17 +32,19 @@ public class FormatterApp {
         splitter.split();
         System.out.println(splitter.getWords().size());
         
-        for (List<TextRun> word : splitter.getWords()) {
-            for (TextRun run : word) {
+        for (Word word : splitter.getWords()) {
+            for (TextRun run : word.runs) {
                 System.out.print(run.text);
             }
             System.out.print("\n");
+            System.out.println("before: " + (word.spaceBefore ? "yes" : "no"));
+            System.out.println("after: " + (word.spaceAfter ? "yes" : "no"));
         }
         
-        ParagraphFormatter formatter = new ParagraphFormatter(pg, new ParagraphLayout());
-        float width = formatter.calculateWordWidth(splitter.getWords().get(0));
-        float height = formatter.calculateWordHeight(splitter.getWords().get(0));
-        System.out.println(width);
-        System.out.println(height);
+        // ParagraphFormatter formatter = new ParagraphFormatter(pg, new ParagraphLayout());
+        // float width = formatter.calculateWordWidth(splitter.getWords().get(0));
+        // float height = formatter.calculateWordHeight(splitter.getWords().get(0));
+        // System.out.println(width);
+        // System.out.println(height);
     }
 }

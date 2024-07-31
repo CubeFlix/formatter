@@ -1,8 +1,14 @@
-C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\TextStyle.java
+C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\FormattedLine.java
+C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\WordSize.java
+C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\ParagraphAlignment.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\FormatterApp.java
+C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\ParagraphFormatter.java
+C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\TextStyle.java
+C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\Word.java
+C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\Coordinate.java
+C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\LineFormatter.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\Paragraph.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\TextRun.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\ParagraphLayout.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\ParagraphStyle.java
-C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\ParagraphFormatter.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\WordSplitter.java

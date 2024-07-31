@@ -12,43 +12,38 @@ import java.util.List;
  * @author Kevin Chen
  */
 public class LineFormatter {
-    private List<List<TextRun>> words;
-    private List<WordSize> calculatedWordSizes;
+    private List<Word> words;
     private ParagraphStyle style;
     private ParagraphLayout lineLayout;
     
     public List<Coordinate> calculatedOffsets = new ArrayList<>();
 
-    LineFormatter(List<List<TextRun>> words, 
-            List<WordSize> calculatedWordSizes,
+    LineFormatter(List<Word> words, 
             ParagraphStyle style) {
         this.words = words;
-        this.calculatedWordSizes = calculatedWordSizes;
         this.style = style;
     }
     
-    LineFormatter(List<List<TextRun>> words, 
-            List<WordSize> calculatedWordSizes,
+    LineFormatter(List<Word> words, 
             ParagraphStyle style,
             ParagraphLayout lineLayout) {
         this.words = words;
-        this.calculatedWordSizes = calculatedWordSizes;
         this.style = style;
         this.lineLayout = lineLayout;
     }
     
     public float getTotalWidth() {
         float width = 0;
-        for (WordSize word : this.calculatedWordSizes) {
-            width += word.width + this.style.spaceWidth;
+        for (Word word : this.words) {
+            width += word.getCalculatedSize().width;
         }
         return width;
     }
     
     public float getTotalHeight() {
         float height = 0;
-        for (WordSize word : this.calculatedWordSizes) {
-            height = Math.max(height, word.height);
+        for (Word word : this.words) {
+            height = Math.max(height, word.getCalculatedSize().height);
         }
         return height;
     }
