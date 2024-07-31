@@ -41,7 +41,7 @@ public class FormatterApp {
         }
         
         Coordinate start = new Coordinate(0, 0);
-        Coordinate end = new Coordinate(1000, 1000);
+        Coordinate end = new Coordinate(50000, 200000);
         ParagraphFormatter formatter = new ParagraphFormatter(pg, new ParagraphLayout(start, end));
         formatter.format();
         List<LineFormatting> formatting = formatter.getFormatting();

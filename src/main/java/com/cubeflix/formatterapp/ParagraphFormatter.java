@@ -56,11 +56,21 @@ public class ParagraphFormatter {
     private LineFormatter fitWordsOnLine() {
         float widthUsed = 0;
         List<Word> words = new ArrayList<>();
-        while (widthUsed < this.layout.getWidth() &&
+        while (widthUsed <= this.layout.getWidth() &&
                 !this.words.isEmpty()) {
             Word word = this.words.removeFirst();
             words.add(word);
             widthUsed += word.getCalculatedSize().width;
+        }
+        
+        // If we went over the width limit, remove the last word and add it 
+        // back to the word list.
+        if (widthUsed > this.layout.getWidth()) {
+            this.words.addFirst(words.removeLast());
+        }
+        if (words.isEmpty() && !this.words.isEmpty()) {
+            // No words could be fit on the line, but there's still words left.
+            words.add(this.words.removeFirst());
         }
         
         LineFormatter formatter = new LineFormatter(words, 
