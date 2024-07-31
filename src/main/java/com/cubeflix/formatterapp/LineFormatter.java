@@ -4,6 +4,7 @@
  */
 package com.cubeflix.formatterapp;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,16 @@ public class LineFormatter {
     private ParagraphStyle style;
     private ParagraphLayout lineLayout;
     
-    public List<Coordinate> calculatedOffsets = new ArrayList<>();
+    private LineFormatting formatting;
+    private List<Coordinate> calculatedOffsets = new ArrayList<>();
+
+    public LineFormatting getFormatting() {
+        return formatting;
+    }
+
+    public List<Coordinate> getCalculatedOffsets() {
+        return calculatedOffsets;
+    }
 
     LineFormatter(List<Word> words, 
             ParagraphStyle style) {
@@ -30,6 +40,31 @@ public class LineFormatter {
         this.words = words;
         this.style = style;
         this.lineLayout = lineLayout;
+    }
+    
+    public void format() throws IOException {
+        this.trimSpaces();
+        this.recalculateSizes();
+        this.calculateSpacing();
+        
+        this.formatting.words = words;
+    }
+    
+    /**
+     * Trim spaces at the left and right of the line.
+     */
+    private void trimSpaces() {
+        this.words.getFirst().spaceBefore = false;
+        this.words.getLast().spaceAfter = false;
+    }
+    
+    /**
+     * Recalculate the sizes of each of the words.
+     */
+    private void recalculateSizes() throws IOException {
+        for (Word word : this.words) {
+            word.calculateWordSize();
+        }
     }
     
     public float getTotalWidth() {
@@ -50,5 +85,49 @@ public class LineFormatter {
 
     public void setLineLayout(ParagraphLayout lineLayout) {
         this.lineLayout = lineLayout;
+    }
+    
+    private void calculateSpacing() {
+        switch (this.style.alignment) {
+            case ParagraphAlignment.LEFT:
+                this.calculateLeftAlign();
+                break;
+            case ParagraphAlignment.CENTER:
+                this.calculateCenterAlign();
+                break;
+            case ParagraphAlignment.RIGHT:
+                this.calculateRightAlign();
+                break;
+            case ParagraphAlignment.JUSTIFY:
+                this.calculateJustifyAlign();
+                break;
+        }
+    }
+    
+    private void calculateLeftAlign() {
+        Coordinate start = this.lineLayout.getStart();
+        this.formatting = new LineFormatting(start);
+    }
+    
+    private void calculateCenterAlign() {
+        Coordinate start = this.lineLayout.getStart();
+        start.x += (this.lineLayout.getWidth() - this.getTotalWidth()) / 2.0;
+        this.formatting = new LineFormatting(start);
+    }
+    
+    private void calculateRightAlign() {
+        Coordinate start = this.lineLayout.getStart();
+        start.x += this.lineLayout.getWidth() - this.getTotalWidth();
+        this.formatting = new LineFormatting(start);
+    }
+    
+    private void calculateJustifyAlign() {
+        Coordinate start = this.lineLayout.getStart();
+        float spacing = 0;
+        if (this.words.size() > 1) {
+            spacing = (this.lineLayout.getWidth() - 
+                    this.getTotalWidth()) / (float)(this.words.size() - 1);
+        }
+        this.formatting = new LineFormatting(start, spacing);
     }
 }

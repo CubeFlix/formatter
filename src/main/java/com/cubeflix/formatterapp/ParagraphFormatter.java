@@ -17,10 +17,27 @@ public class ParagraphFormatter {
     private ParagraphLayout layout;
     private List<Word> words;
     private List<LineFormatter> lineFormatters;
+    private List<LineFormatting> formatting;
+
+    public List<LineFormatting> getFormatting() {
+        return formatting;
+    }
     
     ParagraphFormatter(Paragraph paragraph, ParagraphLayout layout) {
         this.paragraph = paragraph;
         this.layout = layout;
+    }
+    
+    public void format() throws IOException {
+        this.splitIntoWords();
+        this.calculateWordSizes();
+        this.fitLines();
+        this.formatLines();
+        
+        this.formatting = new ArrayList<>();
+        for (LineFormatter formatter : this.lineFormatters) {
+            this.formatting.add(formatter.getFormatting());
+        }
     }
     
     private void splitIntoWords() {
@@ -36,7 +53,7 @@ public class ParagraphFormatter {
         }
     }
     
-    public LineFormatter fitWordsOnLine() {
+    private LineFormatter fitWordsOnLine() {
         float widthUsed = 0;
         List<Word> words = new ArrayList<>();
         while (widthUsed < this.layout.getWidth() &&
@@ -51,7 +68,7 @@ public class ParagraphFormatter {
         return formatter;
     }
     
-    public void fitLines() {
+    private void fitLines() {
         this.lineFormatters = new ArrayList<>();
         float heightUsed = 0;
         while (heightUsed < this.layout.getHeight() && 
@@ -72,6 +89,12 @@ public class ParagraphFormatter {
             
             this.lineFormatters.add(formatter);
             heightUsed += height;
+        }
+    }
+    
+    private void formatLines() throws IOException {
+        for (LineFormatter formatter : this.lineFormatters) {
+            formatter.format();
         }
     }
 }

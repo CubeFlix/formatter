@@ -8,12 +8,6 @@ package com.cubeflix.formatterapp;
  *
  * @author Kevin Chen
  */
-public class ParagraphStyle {
-    public float leading;
-    public ParagraphAlignment alignment;
+public class PDFRenderer {
     
-    ParagraphStyle(float leading, ParagraphAlignment alignment) {
-        this.leading = leading;
-        this.alignment = alignment;
-    }
 }
