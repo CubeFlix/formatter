@@ -14,6 +14,10 @@ import java.util.List;
  */
 public class LineFormatter {
     private List<Word> words;
+
+    public List<Word> getWords() {
+        return words;
+    }
     private ParagraphStyle style;
     private ParagraphLayout lineLayout;
     

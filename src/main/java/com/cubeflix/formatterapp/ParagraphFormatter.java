@@ -18,6 +18,11 @@ public class ParagraphFormatter {
     private List<Word> words;
     private List<LineFormatter> lineFormatters;
     private List<LineFormatting> formatting;
+    private List<Word> unfitWords;
+
+    public List<Word> getUnfitWords() {
+        return unfitWords;
+    }
 
     public List<LineFormatting> getFormatting() {
         return formatting;
@@ -80,6 +85,7 @@ public class ParagraphFormatter {
     
     private void fitLines() {
         this.lineFormatters = new ArrayList<>();
+        this.unfitWords = new ArrayList<>();
         float heightUsed = 0;
         while (heightUsed < this.layout.getHeight() && 
                 !this.words.isEmpty()) {
@@ -95,6 +101,11 @@ public class ParagraphFormatter {
             heightUsed += this.paragraph.style.leading;
             this.lineFormatters.add(formatter);
         }
+        
+        if (heightUsed > this.layout.getHeight()) {
+            this.unfitWords.addAll(this.lineFormatters.removeLast().getWords());
+        }
+        this.unfitWords.addAll(this.words);
     }
     
     private void formatLines() throws IOException {
