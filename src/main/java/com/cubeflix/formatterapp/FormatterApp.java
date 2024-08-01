@@ -6,6 +6,8 @@ package com.cubeflix.formatterapp;
 
 import java.io.IOException;
 import java.util.List;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 
@@ -17,15 +19,21 @@ public class FormatterApp {
     public static void main(String[] args) throws IOException {        
         TextStyle style1 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 12);
         TextStyle style2 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.COURIER_BOLD), 14);
+        TextStyle style3 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 14);
         
-        TextRun run1 = new TextRun("Hello, my name is K", style1);
-        TextRun run2 = new TextRun("evin L", style2);
+        TextRun run1 = new TextRun("I remember you was conflicted. Misusing your influence. Sometimes I did the same. Hello, my name is K", style1);
+        TextRun run2 = new TextRun("evin L", style3);
         TextRun run3 = new TextRun("u", style1);
-        TextRun run4 = new TextRun(" Chen.", style1);
+        TextRun run4 = new TextRun(" Chen. Goo goo ga ga. Test 123 \"The first lumen is connected downwards from the first bag to the second pump from the bottom-left side of the pole.\"", style2);
         
         TextRun[] runs = {run1, run2, run3, run4};
-        ParagraphStyle pgstyle = new ParagraphStyle(14.5f, ParagraphAlignment.RIGHT);
+        ParagraphStyle pgstyle = new ParagraphStyle(14.5f * 1000.0f, ParagraphAlignment.JUSTIFY);
         Paragraph pg = new Paragraph(runs, pgstyle);
+        
+        Coordinate start = new Coordinate(14000, 14000);
+        Coordinate end = new Coordinate(200000, 200000);
+        ParagraphLayout layout = new ParagraphLayout(start, end);
+        
         
         WordSplitter splitter = new WordSplitter(pg);
         splitter.split();
@@ -40,17 +48,29 @@ public class FormatterApp {
             System.out.println("space after: " + (word.spaceAfter ? "yes" : "no"));
         }
         
-        Coordinate start = new Coordinate(0, 0);
-        Coordinate end = new Coordinate(50000, 200000);
+        /*
         ParagraphFormatter formatter = new ParagraphFormatter(pg, new ParagraphLayout(start, end));
         formatter.format();
         List<LineFormatting> formatting = formatter.getFormatting();
         for (LineFormatting line : formatting) {
             System.out.printf("Line - words: %d, x: %f, y: %f, spacingOverride: %f\n", line.words.size(), line.start.x, line.start.y, line.spacingOverride);
         }
+        */
         // float width = formatter.calculateWordWidth(splitter.getWords().get(0));
         // float height = formatter.calculateWordHeight(splitter.getWords().get(0));
         // System.out.println(width);
         // System.out.println(height);
+        
+        PDDocument document = new PDDocument();
+        PDPage page = new PDPage();
+        document.addPage(page);
+        PDFRenderer renderer = new PDFRenderer(document);
+        renderer.renderParagraph(pg, page, layout);
+        
+        document.save("testrender.pdf");
+        PDFImageViewer viewer = new PDFImageViewer();
+        viewer.main(args, document);
+        
+        document.close();
     }
 }

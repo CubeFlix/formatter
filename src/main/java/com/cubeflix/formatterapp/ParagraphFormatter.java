@@ -83,10 +83,6 @@ public class ParagraphFormatter {
         float heightUsed = 0;
         while (heightUsed < this.layout.getHeight() && 
                 !this.words.isEmpty()) {
-            if (heightUsed != 0) {
-                // If there's already lines in this paragraph, add the leading.
-                heightUsed += this.paragraph.style.leading;
-            }
             LineFormatter formatter = this.fitWordsOnLine();
             float height = formatter.getTotalHeight();
 
@@ -96,9 +92,8 @@ public class ParagraphFormatter {
                     this.layout.getStart().y + heightUsed + height);
             ParagraphLayout lineLayout = new ParagraphLayout(start, end);
             formatter.setLineLayout(lineLayout);
-            
+            heightUsed += this.paragraph.style.leading;
             this.lineFormatters.add(formatter);
-            heightUsed += height;
         }
     }
     
