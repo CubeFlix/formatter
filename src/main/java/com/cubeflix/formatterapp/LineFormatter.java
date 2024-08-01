@@ -130,6 +130,13 @@ public class LineFormatter {
     }
     
     private void calculateJustifyAlign() {
+        // If the line uses less than half of the total width, format it as a
+        // left-aligned line.
+        if (this.getTotalWidth() / this.lineLayout.getWidth() <= 0.5f) {
+            this.calculateLeftAlign();
+            return;
+        }
+        
         Coordinate start = this.lineLayout.getStart();
         float spacing = 0;
         if (this.words.size() > 1) {
