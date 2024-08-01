@@ -5,6 +5,7 @@
 package com.cubeflix.formatterapp;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -15,10 +16,42 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
  * @author Kevin Chen
  */
 public class PDFRenderer {
-    private PDDocument document;
+    private final PDDocument document;
     
     PDFRenderer(PDDocument document) {
         this.document = document;
+    }
+    
+    private List<TextRun> joinAdjacentRunsInLine(LineFormatting line) {
+        List<TextRun> runs = new ArrayList<>();
+        TextRun currentRun = null;
+        for (Word word : line.words) {
+            if (currentRun != null && word.spaceBefore) {
+                currentRun.text = " " + currentRun.text;
+            }
+            for (TextRun run : word.runs) {
+                if (currentRun == null) {
+                    currentRun = new TextRun(run.text, run.style);
+                    if (word.spaceBefore) {
+                        currentRun.text = " " + currentRun.text;
+                    }
+                    continue;
+                } 
+                if (currentRun.style.equals(run.style)) {
+                    currentRun.text += run.text;
+                } else {
+                    runs.add(currentRun);
+                    currentRun = new TextRun(run.text, run.style);
+                }
+            }
+            if (word.spaceAfter) {
+                currentRun.text += " ";
+            }
+        }
+        if (currentRun != null) {
+            runs.add(currentRun);
+        }
+        return runs;
     }
     
     public void renderParagraph(Paragraph paragraph, 
@@ -54,20 +87,12 @@ public class PDFRenderer {
         if (line.overrideSpacing) {
             contentStream.setWordSpacing(line.spacingOverride / 1000.0f);
         }
-        for (Word word : line.words) {
-            for (int i = 0; i < word.runs.size(); i++) {
-                TextRun run = word.runs.get(i);
-                contentStream.setFont(run.style.family, run.style.size);
-                
-                String text = run.text;
-                if (i == 0 && word.spaceBefore) {
-                    text = " " + text;
-                }
-                if (i == word.runs.size() - 1 && word.spaceAfter) {
-                    text = text + " ";
-                }
-                contentStream.showText(text);
-            }
+        List<TextRun> runs = this.joinAdjacentRunsInLine(line);
+        for (int i = 0; i < runs.size(); i++) {
+            TextRun run = runs.get(i);
+            contentStream.setFont(run.style.family, run.style.size);
+            
+            contentStream.showText(run.text);
         }
     }
     

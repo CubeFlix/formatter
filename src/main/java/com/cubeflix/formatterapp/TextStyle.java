@@ -4,6 +4,7 @@
  */
 package com.cubeflix.formatterapp;
 
+import java.util.Objects;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 
 /**
@@ -25,5 +26,26 @@ public class TextStyle {
         this.family = family;
         this.size = size;
         this.spacing = spacing;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TextStyle other = (TextStyle) obj;
+        if (Float.floatToIntBits(this.size) != Float.floatToIntBits(other.size)) {
+            return false;
+        }
+        if (Float.floatToIntBits(this.spacing) != Float.floatToIntBits(other.spacing)) {
+            return false;
+        }
+        return this.family == other.family;
     }
 }
