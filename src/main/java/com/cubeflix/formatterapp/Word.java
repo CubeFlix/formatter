@@ -5,14 +5,16 @@
 package com.cubeflix.formatterapp;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  * @author Kevin Chen
  */
-public class Word {
+public class Word implements InlineObject {
     public List<TextRun> runs;
+    public List<InlineObject> objects;
     public boolean spaceBefore;
     public boolean spaceAfter;
     private WordSize calculatedSize;
@@ -23,12 +25,23 @@ public class Word {
     
     Word(List<TextRun> runs) {
         this.runs = runs;
+        
+        this.populateObjectsFromRuns();
     }
     
     Word(List<TextRun> runs, boolean spaceBefore, boolean spaceAfter) {
         this.runs = runs;
         this.spaceBefore = spaceBefore;
         this.spaceAfter = spaceAfter;
+        
+        this.populateObjectsFromRuns();
+    }
+    
+    private void populateObjectsFromRuns() {
+        this.objects = new ArrayList<>();
+        for (TextRun run : this.runs) {
+            this.objects.add((InlineObject)run);
+        }
     }
     
     private float calculateWordWidth() throws IOException {

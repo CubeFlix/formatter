@@ -8,7 +8,7 @@ package com.cubeflix.formatterapp;
  *
  * @author Kevin Chen
  */
-public class TextRun {
+public class TextRun implements InlineObject {
     public String text;
     public TextStyle style;
 

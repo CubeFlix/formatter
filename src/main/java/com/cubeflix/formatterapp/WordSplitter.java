@@ -42,8 +42,18 @@ public class WordSplitter {
     
     public void split() {
         Word lastWord = null;
-        for (int i = 0; i < this.paragraph.runs.length; i++) {
-            TextRun run = paragraph.runs[i];
+        for (int i = 0; i < this.paragraph.objects.length; i++) {
+            InlineObject object = paragraph.objects[i];
+            if (object.getClass().equals(TextRun.class)) {
+                if (lastWord != null) {
+                    lastWord.objects.add(object);
+                } else {
+                    lastWord = new Word(new ArrayList<>(), false, false);
+                }
+                continue;
+            }
+            
+            TextRun run = (TextRun)object;
             List<TextRun> fragments = this.splitRun(run);
             int numOriginalFragments = fragments.size();
             
@@ -60,7 +70,9 @@ public class WordSplitter {
                     lastWord = null;
                 } else {
                     ateFirstFragment = true;
-                    lastWord.runs.add(fragments.remove(0));
+                    TextRun runToAdd = fragments.remove(0);
+                    lastWord.runs.add(runToAdd);
+                    lastWord.objects.add((InlineObject)runToAdd);
                     // If there was more than one fragment in this run, or if 
                     // there's only one fragment and it ends in whitespace, we 
                     // can push this word.
@@ -95,7 +107,7 @@ public class WordSplitter {
             
             // If the run ends with whitespace, push the last fragment as its
             // own word, otherwise set lastWord.
-            if (this.endsWithWhitespace(paragraph.runs[i].text)) {
+            if (this.endsWithWhitespace(run.text)) {
                 List<TextRun> wordRuns = new ArrayList<>();
                 wordRuns.add(fragments.getLast());
                 this.words.add(new Word(wordRuns, false, true));
