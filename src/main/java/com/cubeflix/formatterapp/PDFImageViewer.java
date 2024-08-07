@@ -30,8 +30,8 @@ public class PDFImageViewer extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		int width = 590 * 2;
-		int height = 840 * 2;
+		int width = 600 * 2;
+		int height = 500 * 2;
 
 		PDFRenderer renderer = new PDFRenderer(doc);
 		BufferedImage img = renderer.renderImage(0, pdfScale);

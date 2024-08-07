@@ -121,6 +121,7 @@ public class WordSplitter {
                 }
                 lastWord = new Word(new ArrayList<>(), spaceBefore, false);
                 lastWord.runs.add(fragments.getLast());
+                lastWord.objects.add(fragments.getLast());
             }
         }
         

@@ -11,9 +11,19 @@ package com.cubeflix.formatterapp;
 public class ParagraphStyle {
     public float leading;
     public ParagraphAlignment alignment;
+    public HyphenationSettings hyphenation;
     
     ParagraphStyle(float leading, ParagraphAlignment alignment) {
         this.leading = leading;
         this.alignment = alignment;
+        this.hyphenation = new HyphenationSettings();
+    }
+    
+    ParagraphStyle(float leading, 
+            ParagraphAlignment alignment,
+            HyphenationSettings hyphenation) {
+        this.leading = leading;
+        this.alignment = alignment;
+        this.hyphenation = hyphenation;
     }
 }

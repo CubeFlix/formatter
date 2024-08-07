@@ -4,10 +4,13 @@
  */
 package com.cubeflix.formatterapp;
 
+import java.io.IOException;
+
 /**
  *
  * @author Kevin Chen
  */
 public interface InlineObject {
-    
+    public float getWidth() throws IOException;
+    public float getHeight() throws IOException;
 }

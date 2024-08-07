@@ -23,6 +23,14 @@ public class Word implements InlineObject {
         return calculatedSize;
     }
     
+    public float getHeight() throws IOException {
+        return this.calculatedSize.height;
+    }
+    
+    public float getWidth() throws IOException {
+        return this.calculatedSize.width;
+    }
+    
     Word(List<TextRun> runs) {
         this.runs = runs;
         
@@ -37,10 +45,31 @@ public class Word implements InlineObject {
         this.populateObjectsFromRuns();
     }
     
-    private void populateObjectsFromRuns() {
+    Word(List<InlineObject> objects, 
+            boolean spaceBefore, 
+            boolean spaceAfter,
+            WordSize calculatedSize) {
+        this.objects = objects;
+        this.spaceBefore = spaceBefore;
+        this.spaceAfter = spaceAfter;
+        this.calculatedSize = calculatedSize;
+        
+        this.populateRunsFromObjects();
+    }
+    
+    public void populateObjectsFromRuns() {
         this.objects = new ArrayList<>();
         for (TextRun run : this.runs) {
             this.objects.add((InlineObject)run);
+        }
+    }
+    
+    public void populateRunsFromObjects() {
+        this.runs = new ArrayList<>();
+        for (int i = 0; i < this.objects.size(); i++) {
+            if (this.objects.get(i).getClass().equals(TextRun.class)) {
+                runs.add((TextRun)this.objects.get(i));
+            }
         }
     }
     
@@ -50,9 +79,8 @@ public class Word implements InlineObject {
             width += this.runs.getFirst().style.spacing * 
                     this.runs.getFirst().style.size;
         }
-        for (TextRun run : this.runs) {
-            width += run.style.family.getStringWidth(run.text) * 
-                    run.style.size;
+        for (InlineObject object : this.objects) {
+            width += object.getWidth();
         }
         if (this.spaceAfter) {
             width += this.runs.getLast().style.spacing * 
@@ -62,13 +90,11 @@ public class Word implements InlineObject {
         return width;
     }
     
-    private float calculateWordHeight() {
+    private float calculateWordHeight() throws IOException {
         float height = 0;
-        for (TextRun run : this.runs) {
-            float runHeight = run.style.family.getFontDescriptor().getAscent() + 
-                            run.style.family.getFontDescriptor().getDescent();
-            runHeight *= run.style.size;
-            height = Math.max(height, runHeight);
+        for (InlineObject object : this.objects) {
+            float objectHeight = object.getHeight();
+            height = Math.max(height, objectHeight);
         }
         return height;
     }
@@ -76,5 +102,13 @@ public class Word implements InlineObject {
     public void calculateWordSize() throws IOException {
         this.calculatedSize = new WordSize(this.calculateWordHeight(),
                 this.calculateWordWidth());
+    }
+    
+    public Word copy() throws IOException {
+        Word clone = new Word(this.objects.subList(0, this.objects.size()), 
+            this.spaceBefore, 
+            this.spaceAfter,
+            this.calculatedSize);
+        return clone;
     }
 }

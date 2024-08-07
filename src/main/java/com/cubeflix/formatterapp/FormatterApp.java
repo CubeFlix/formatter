@@ -63,11 +63,11 @@ public class FormatterApp {
         TextStyle style1 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 12);
         TextRun run1 = new TextRun("Lorem ipsum odor amet, consectetuer adipiscing elit. Senectus eu accumsan cras cubilia penatibus ex. Proin ornare congue adipiscing suscipit porttitor. Neque placerat urna, dictum lorem quam nostra. Sociosqu leo euismod volutpat mattis neque non suscipit dictum habitant. Volutpat malesuada mattis hac inceptos vehicula aptent maximus condimentum. Montes volutpat feugiat consequat eget egestas phasellus. Dapibus nunc vel ornare, litora sapien congue fringilla. Blandit molestie sodales fringilla tempor, conubia duis? Id ante lacus dis porta curabitur. Ligula massa mus fermentum felis bibendum donec taciti. Fermentum lacinia ornare habitant ipsum quis diam a faucibus. Lacus ipsum nostra ut nec inceptos pellentesque dolor praesent. Faucibus convallis habitant; etiam phasellus turpis iaculis. Integer dolor maximus metus ac dictumst nunc penatibus. Imperdiet molestie pellentesque tempor eu fusce adipiscing per. Curae ipsum id elit eleifend tellus. Congue venenatis eros accumsan consequat neque class facilisis.", style1);
         TextRun[] runs = {run1};
-        ParagraphStyle pgstyle = new ParagraphStyle(14.5f * 1000.0f, ParagraphAlignment.LEFT);
+        ParagraphStyle pgstyle = new ParagraphStyle(14.5f * 1000.0f, ParagraphAlignment.JUSTIFY, new HyphenationSettings(false, 0.9f));
         Paragraph pg = new Paragraph(runs, pgstyle);
         
         Coordinate start = new Coordinate(14500, 14500);
-        Coordinate end = new Coordinate(600000, 600000);
+        Coordinate end = new Coordinate(500000, 600000);
         ParagraphLayout layout = new ParagraphLayout(start, end);
         
         PDDocument document = new PDDocument();
