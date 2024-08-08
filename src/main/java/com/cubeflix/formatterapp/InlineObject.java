@@ -13,4 +13,5 @@ import java.io.IOException;
 public interface InlineObject {
     public float getWidth() throws IOException;
     public float getHeight() throws IOException;
+    public boolean isVisible();
 }

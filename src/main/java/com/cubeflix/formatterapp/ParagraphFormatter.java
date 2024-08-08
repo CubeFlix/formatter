@@ -104,6 +104,19 @@ public class ParagraphFormatter {
         return formatter;
     }
     
+    private void addHyphenToEnd(Word word) {
+        for (int i = word.objects.size() - 1; i >= 0; i--) {
+            if (!word.objects.get(i).isVisible()) {
+                continue;
+            }
+            if (word.objects.get(i).getClass().equals(TextRun.class)) {
+                TextRun last = ((TextRun)word.objects.get(i));
+                last.text += "-";
+            }
+            break;
+        }
+    }
+    
     private void hyphenate(float widthUsed, List<Word> words) 
             throws IOException {
         if (widthUsed / this.layout.getWidth() >= 
@@ -120,6 +133,7 @@ public class ParagraphFormatter {
                 false);
         Word lastFitting = null;
         int i = 0;
+        float originalWidthUsed = widthUsed;
         while (widthUsed < this.layout.getWidth() && i < word.objects.size()) {
             InlineObject object = word.objects.get(i);
             if (object.getClass().equals(SoftHyphen.class)) {
@@ -127,11 +141,17 @@ public class ParagraphFormatter {
                 // the end and test the width.
                 if (beforeHyphen.objects.getLast().getClass().
                         equals(TextRun.class)) {
-                    ((TextRun)beforeHyphen.objects.getLast()).text += "-";
+                    TextRun last = ((TextRun)beforeHyphen.objects.getLast());
+                    String originalLastText = 
+                            last.text.substring(0, last.text.length());
+                    last.text += "-";
                     beforeHyphen.populateRunsFromObjects();
-                    widthUsed -= beforeHyphen.getWidth();
                     beforeHyphen.calculateWordSize();
-                    widthUsed += beforeHyphen.getWidth();
+                    widthUsed = originalWidthUsed + beforeHyphen.getWidth();
+                    
+                    // Remove the hyphen we just added (we'll add it back at 
+                    // the end).
+                    last.text = originalLastText;
                     
                     // If the word fits, set lastFitting.
                     if (widthUsed < this.layout.getWidth()) {
@@ -148,24 +168,22 @@ public class ParagraphFormatter {
         // Okay. Okay, okay, okay. Here we go. Ha!
         if (lastFitting != null) {
             // Check if the the new width is above the threshold.
-            widthUsed -= beforeHyphen.getWidth();
-            widthUsed += lastFitting.getWidth();
+            widthUsed = originalWidthUsed + lastFitting.getWidth();
             if (widthUsed / this.layout.getWidth() >= 
                 this.paragraph.style.hyphenation.widthRatioThreshold) {
                 // Put the new word on the line and return the other half of 
                 // the word.
                 lastFitting.populateRunsFromObjects();
+                this.addHyphenToEnd(lastFitting);
                 words.add(lastFitting);
                 for (int j = 0; j < lastFitting.objects.size(); j++) {
                     word.objects.removeFirst();
                 }
                 this.words.addFirst(word);
                 return;
-            } else {
-                widthUsed -= lastFitting.getWidth();
-                this.words.addFirst(word);
             }
         }
+        widthUsed = originalWidthUsed;
         this.words.addFirst(word);
         this.hyphenationFallback(widthUsed, words);
     }
@@ -221,12 +239,15 @@ public class ParagraphFormatter {
                         break;
                     }
                 }
+                if (!ranOutOfSpace) {
+                    splitRun.text = run.text.substring(0, run.text.length());
+                    run.text = "";
+                }
                 widthUsed = originalWidthUsed + splitRun.getWidth();
                 fitting.objects.add(splitRun);
                 if (run.text.length() == 0) {
                     // All the text is used up.
                     word.objects.removeFirst();
-                    break;
                 }
                 if (ranOutOfSpace) {
                     break;
@@ -241,20 +262,18 @@ public class ParagraphFormatter {
             }
         }
         
-        word.populateRunsFromObjects();
-        word.calculateWordSize();
         if (fitting.objects.isEmpty()) {
             return;
         }
         fitting.populateRunsFromObjects();
         if (!word.objects.isEmpty()) {
+            word.populateRunsFromObjects();
+            word.calculateWordSize();
             this.words.addFirst(word);
         }
-        
+                
         // Add the dash to the end.
-        if (fitting.objects.getLast().getClass().equals(TextRun.class)) {
-            ((TextRun)fitting.objects.getLast()).text += "-";
-        }
+        this.addHyphenToEnd(fitting);
 
         fitting.calculateWordSize();
         words.add(fitting);

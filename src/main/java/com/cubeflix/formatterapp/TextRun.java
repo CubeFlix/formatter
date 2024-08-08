@@ -38,4 +38,8 @@ public class TextRun implements InlineObject {
         height *= this.style.size;
         return height;
     }
+    
+    public boolean isVisible() {
+        return true;
+    }
 }

@@ -22,4 +22,8 @@ public class SoftHyphen implements InlineObject {
     public float getWidth() throws IOException {
         return 0.0f;
     }
+    
+    public boolean isVisible() {
+        return false;
+    }
 }

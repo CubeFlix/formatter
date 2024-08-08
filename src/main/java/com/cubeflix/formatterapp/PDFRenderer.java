@@ -22,14 +22,26 @@ public class PDFRenderer {
         this.document = document;
     }
     
-    private List<TextRun> joinAdjacentRunsInLine(LineFormatting line) {
-        List<TextRun> runs = new ArrayList<>();
+    private List<InlineObject> joinAdjacentRunsInLine(LineFormatting line) {
+        List<InlineObject> objects = new ArrayList<>();
         TextRun currentRun = null;
         for (Word word : line.words) {
             if (currentRun != null && word.spaceBefore) {
                 currentRun.text = " " + currentRun.text;
             }
-            for (TextRun run : word.runs) {
+            for (InlineObject object : word.objects) {
+                if (!object.getClass().equals(TextRun.class)) {
+                    if (!object.isVisible()) {
+                        continue;
+                    }
+                    if (currentRun != null) {
+                        objects.add((InlineObject)currentRun);
+                        currentRun = null;
+                    }
+                    objects.add(object);
+                    continue;
+                }
+                TextRun run = (TextRun)object;
                 if (currentRun == null) {
                     currentRun = new TextRun(run.text, run.style);
                     if (word.spaceBefore) {
@@ -40,7 +52,7 @@ public class PDFRenderer {
                 if (currentRun.style.equals(run.style)) {
                     currentRun.text += run.text;
                 } else {
-                    runs.add(currentRun);
+                    objects.add((TextRun)currentRun);
                     currentRun = new TextRun(run.text, run.style);
                 }
             }
@@ -49,9 +61,9 @@ public class PDFRenderer {
             }
         }
         if (currentRun != null) {
-            runs.add(currentRun);
+            objects.add((InlineObject)currentRun);
         }
-        return runs;
+        return objects;
     }
     
     public void renderParagraph(Paragraph paragraph, 
@@ -88,12 +100,22 @@ public class PDFRenderer {
         if (line.overrideSpacing) {
             contentStream.setWordSpacing(line.spacingOverride / 1000.0f);
         }
-        List<TextRun> runs = this.joinAdjacentRunsInLine(line);
-        for (int i = 0; i < runs.size(); i++) {
-            TextRun run = runs.get(i);
-            contentStream.setFont(run.style.family, run.style.size);
-            
-            contentStream.showText(run.text);
+        List<InlineObject> objects = this.joinAdjacentRunsInLine(line);
+        for (int i = 0; i < objects.size(); i++) {
+            InlineObject object = objects.get(i);
+            if (!object.isVisible()) {
+                continue;
+            }
+            switch (object) {
+                case TextRun run -> {
+                    contentStream.setFont(run.style.family, run.style.size);
+                    contentStream.showText(run.text);
+                }
+                default -> {
+                    // TODO
+                    throw new UnsupportedOperationException();
+                }
+            }
         }
     }
     

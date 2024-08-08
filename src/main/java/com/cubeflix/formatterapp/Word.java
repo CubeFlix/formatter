@@ -31,6 +31,10 @@ public class Word implements InlineObject {
         return this.calculatedSize.width;
     }
     
+    public boolean isVisible() {
+        return true;
+    }
+    
     Word(List<TextRun> runs) {
         this.runs = runs;
         
@@ -105,7 +109,7 @@ public class Word implements InlineObject {
     }
     
     public Word copy() throws IOException {
-        Word clone = new Word(this.objects.subList(0, this.objects.size()), 
+        Word clone = new Word(new ArrayList<>(this.objects), 
             this.spaceBefore, 
             this.spaceAfter,
             this.calculatedSize);
