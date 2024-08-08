@@ -63,6 +63,7 @@ public class PDFRenderer {
         
         PDPageContentStream contentStream = new PDPageContentStream(document, 
                 page);
+        
         contentStream.beginText();
         contentStream.setLeading(paragraph.style.leading / 1000.0f);
         

@@ -11,7 +11,8 @@ package com.cubeflix.formatterapp;
 public class HyphenationSettings {
     public boolean hyphenate;
     public float widthRatioThreshold = 0.75f;
-    public HyphenationFallback fallback;
+    public HyphenationFallback fallback = 
+            HyphenationFallback.HYPHENATE_ANYWHERE;
     
     HyphenationSettings() {
         this.hyphenate = false;
@@ -24,7 +25,6 @@ public class HyphenationSettings {
     HyphenationSettings(boolean hyphenate, float widthRatioThreshold) {
         this.hyphenate = hyphenate;
         this.widthRatioThreshold = widthRatioThreshold;
-        this.fallback = HyphenationFallback.HYPHENATE_ANYWHERE;
     }
     HyphenationSettings(boolean hyphenate, 
             float widthRatioThreshold,

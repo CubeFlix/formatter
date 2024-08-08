@@ -73,17 +73,20 @@ public class ParagraphFormatter {
         if (widthUsed > this.layout.getWidth()) {
             // First, check if removing the space at the end will help.
             Word lastWord = words.removeLast();
+            widthUsed -= lastWord.getCalculatedSize().width;
             boolean spaceAfter = lastWord.spaceAfter;
             lastWord.spaceAfter = false;
-            widthUsed -= lastWord.getCalculatedSize().width;            
             lastWord.calculateWordSize();
-            widthUsed += lastWord.getCalculatedSize().width;
+            float lastWordWidthWithoutSpace = 
+                    lastWord.getCalculatedSize().width;
+            widthUsed += lastWordWidthWithoutSpace;
             lastWord.spaceAfter = 
                     spaceAfter; // Remember to restore spaceAfter.
             if (widthUsed <= this.layout.getWidth()) {
                 words.add(lastWord);
             } else {
-                this.words.addFirst(words.removeLast());
+                this.words.addFirst(lastWord);
+                widthUsed -= lastWordWidthWithoutSpace;
             }
         }
         if (words.isEmpty() && !this.words.isEmpty()) {
@@ -93,7 +96,7 @@ public class ParagraphFormatter {
         
         if (this.paragraph.style.hyphenation.hyphenate && 
                 !this.words.isEmpty()) {
-            this.hyphenate(widthUsed, words);
+             this.hyphenate(widthUsed, words);
         }
         
         LineFormatter formatter = new LineFormatter(words, 
@@ -151,6 +154,7 @@ public class ParagraphFormatter {
                 this.paragraph.style.hyphenation.widthRatioThreshold) {
                 // Put the new word on the line and return the other half of 
                 // the word.
+                lastFitting.populateRunsFromObjects();
                 words.add(lastFitting);
                 for (int j = 0; j < lastFitting.objects.size(); j++) {
                     word.objects.removeFirst();
@@ -162,6 +166,7 @@ public class ParagraphFormatter {
                 this.words.addFirst(word);
             }
         }
+        this.words.addFirst(word);
         this.hyphenationFallback(widthUsed, words);
     }
     
@@ -179,21 +184,27 @@ public class ParagraphFormatter {
     
     private void hyphenateAnywhere(float widthUsed, List<Word> words) 
             throws IOException {
-        Word word = this.words.removeFirst();
+        if (this.words.isEmpty()) {
+            return;
+        }
         
+        // Try to fit objects on the line.
+        Word word = this.words.removeFirst();
         Word fitting = new Word(new ArrayList<>(), word.spaceBefore, false);
-        while (widthUsed < this.layout.getWidth() && word.objects.size() < 0) {
+        while (widthUsed < this.layout.getWidth() && word.objects.size() > 0) {
             InlineObject object = word.objects.getFirst();
             if (object.getClass().equals(TextRun.class)) {
+                // Try to fit individual characters on the line.
                 TextRun run = (TextRun)object;
                 if (run.text.length() < 1) {
                     continue;
                 }
-                TextRun splitRun = new TextRun("");
+                TextRun splitRun = new TextRun("", run.style);
                 int j = 1;
                 float originalWidthUsed = widthUsed;
+                boolean ranOutOfSpace = false;
                 while (widthUsed < this.layout.getWidth() && 
-                        j < run.text.length()) {
+                        j <= run.text.length()) {
                     splitRun.text = run.text.substring(0, j) + "-";
                     float runWidth = splitRun.getWidth();
                     if (originalWidthUsed + runWidth <= 
@@ -203,14 +214,22 @@ public class ParagraphFormatter {
                         j++;
                     } else {
                         // Cut off the used portion of the original run.
+                        j--;
+                        splitRun.text = run.text.substring(0, j);
                         run.text = run.text.substring(j, run.text.length());
+                        ranOutOfSpace = true;
                         break;
                     }
                 }
-                fitting.objects.add(object);
-                if (j == run.text.length()) {
+                widthUsed = originalWidthUsed + splitRun.getWidth();
+                fitting.objects.add(splitRun);
+                if (run.text.length() == 0) {
                     // All the text is used up.
                     word.objects.removeFirst();
+                    break;
+                }
+                if (ranOutOfSpace) {
+                    break;
                 }
             } else {
                 float width = object.getWidth();
@@ -221,6 +240,23 @@ public class ParagraphFormatter {
                 word.objects.removeFirst();
             }
         }
+        
+        word.populateRunsFromObjects();
+        word.calculateWordSize();
+        if (fitting.objects.isEmpty()) {
+            return;
+        }
+        fitting.populateRunsFromObjects();
+        if (!word.objects.isEmpty()) {
+            this.words.addFirst(word);
+        }
+        
+        // Add the dash to the end.
+        if (fitting.objects.getLast().getClass().equals(TextRun.class)) {
+            ((TextRun)fitting.objects.getLast()).text += "-";
+        }
+
+        fitting.calculateWordSize();
         words.add(fitting);
     }
     

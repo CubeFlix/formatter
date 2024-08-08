@@ -132,7 +132,8 @@ public class LineFormatter {
     private void calculateJustifyAlign() {
         // If the line uses less than half of the total width, format it as a
         // left-aligned line.
-        if (this.getTotalWidth() / this.lineLayout.getWidth() <= 0.5f) {
+        if (this.getTotalWidth() / this.lineLayout.getWidth() <= 
+                this.style.hyphenation.widthRatioThreshold) {
             this.calculateLeftAlign();
             return;
         }
