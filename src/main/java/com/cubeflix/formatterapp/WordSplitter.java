@@ -145,8 +145,15 @@ public class WordSplitter {
     
     private boolean endsWithWhitespace(String text) {
         Matcher matcher = this.whitespacePattern.matcher(text);
-        if (matcher.find()) {
-            return matcher.end() == text.length();
+        boolean found = false;
+        int lastEnd = 0;
+        while (matcher.find()) {
+            found = true;
+            lastEnd = matcher.end();
+        }
+        
+        if (found) {
+            return lastEnd == text.length();
         }
         return false;
     }

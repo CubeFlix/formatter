@@ -61,7 +61,7 @@ public class FormatterApp {
         */
         
         TextStyle style1 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 12);
-        TextRun run1 = new TextRun("Hello1Hello2Hello3Hello4Hello5Hello6 Hello7Hello8Hello9Hello10Hello11Hello12", style1);
+        TextRun run1 = new TextRun("Hello1Hello2Hello3Hello4Hello5Hello6 Hello7Hello8Hello9Hello10Hello11Hello12 ", style1);
         TextRun run2 = new TextRun("Hello4Hello5Hello6 Hello1Hello2Hello3Hello4Hello5Hello6 Hello1Hello2Hello3Hello4Hello5Hello6 Hello1Hello2Hello3Hello4Hello5Hello6", style1);
         InlineObject[] runs = {run1, new SoftHyphen(), run2};
         ParagraphStyle pgstyle = new ParagraphStyle(14.5f * 1000.0f, ParagraphAlignment.JUSTIFY, new HyphenationSettings(true, 0.90f));
