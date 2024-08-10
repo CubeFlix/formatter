@@ -138,11 +138,22 @@ public class LineFormatter {
             return;
         }
         
+        // Count the number of spaces.
+        int numSpaces = 0;
+        for (Word word : this.words) {
+            if (word.spaceBefore) {
+                numSpaces++;
+            }
+            if (word.spaceAfter) {
+                numSpaces++;
+            }
+        }
+        
         Coordinate start = this.lineLayout.getStart();
         float spacing = 0;
-        if (this.words.size() > 1) {
-            spacing = (this.lineLayout.getWidth() - 
-                    this.getTotalWidth()) / (float)(this.words.size() - 1);
+        if (numSpaces > 0) {
+            spacing = (this.lineLayout.getWidth()- 
+                    this.getTotalWidth()) / (float)(numSpaces);
         }
         this.formatting = new LineFormatting(start, spacing);
     }

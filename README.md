@@ -10,5 +10,11 @@
 - [ ] should dashes be placed within the text?
 - [ ] test hyphenation and optional hyphenation
 - [ ] spacers alongside words and inline text interface
+- [x] test hyphenation and optional hyphenation
+- [x] spacers alongside words and inline text interface
+- [x] word break
+- [ ] newline
 - [ ] section (multi-paragraph) formatter that handles multiple pages
+- [ ] page break
+- [ ] handle columns
 - [ ] XML format reading

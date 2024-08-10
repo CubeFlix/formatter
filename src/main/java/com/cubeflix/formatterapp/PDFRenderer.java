@@ -17,6 +17,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
  */
 public class PDFRenderer {
     private final PDDocument document;
+    private Coordinate cursor = null;
     
     PDFRenderer(PDDocument document) {
         this.document = document;
@@ -80,13 +81,13 @@ public class PDFRenderer {
         contentStream.setLeading(paragraph.style.leading / 1000.0f);
         
         List<LineFormatting> lines = formatter.getFormatting();
-        Coordinate cursor = new Coordinate(0, 0);
+        this.cursor = new Coordinate(0, 0);
         for (LineFormatting line : lines) {
             Coordinate target = this.translateCoordinate(page, line.start);
-            float offsetX = target.x - cursor.x;
-            float offsetY = target.y - cursor.y;
+            float offsetX = target.x - this.cursor.x;
+            float offsetY = target.y - this.cursor.y;
             contentStream.newLineAtOffset(offsetX, offsetY);
-            cursor = target;
+            this.cursor = target;
             
             this.renderParagraphLine(contentStream, line);
         }
@@ -101,6 +102,8 @@ public class PDFRenderer {
             contentStream.setWordSpacing(line.spacingOverride / 1000.0f);
         }
         List<InlineObject> objects = this.joinAdjacentRunsInLine(line);
+        float xOffset = 0.0f;
+        boolean shouldStartNewLine = false;
         for (int i = 0; i < objects.size(); i++) {
             InlineObject object = objects.get(i);
             if (!object.isVisible()) {
@@ -108,15 +111,49 @@ public class PDFRenderer {
             }
             switch (object) {
                 case TextRun run -> {
-                    contentStream.setFont(run.style.family, run.style.size);
-                    contentStream.showText(run.text);
+                    if (shouldStartNewLine) {
+                        contentStream.newLineAtOffset(xOffset / 1000.0f, 0.0f);
+                        this.cursor.x += xOffset / 1000.0f;
+                        xOffset = 0.0f;
+                        shouldStartNewLine = false;
+                    }
+                    xOffset += this.renderTextRun(contentStream,
+                            line,
+                            run);
+                }
+                case InlineSpacer spacer -> {
+                    xOffset += spacer.width;
+                    shouldStartNewLine = true;
                 }
                 default -> {
-                    // TODO
                     throw new UnsupportedOperationException();
                 }
             }
         }
+    }
+    
+    private float renderTextRun(PDPageContentStream contentStream,
+            LineFormatting line,
+            TextRun run) throws IOException {
+        float width = 0.0f;
+        contentStream.setFont(run.style.family, run.style.size);
+        contentStream.showText(run.text);
+        
+        // Calculate the width.
+        width += run.style.family.getStringWidth(run.text) * run.style.size;
+        if (line.overrideSpacing) {
+            int lastIndex = 0;
+            int spaceCount = 0;
+            while ((lastIndex = run.text.indexOf(" ", lastIndex)) != -1) {
+                lastIndex++;
+                spaceCount++;
+            }
+            
+            // Add the extra space for the spacing override.
+            width += line.spacingOverride * spaceCount;
+        }
+        
+        return width;
     }
     
     public static Coordinate translateCoordinate(PDPage page, Coordinate co) {

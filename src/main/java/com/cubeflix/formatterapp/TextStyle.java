@@ -4,7 +4,6 @@
  */
 package com.cubeflix.formatterapp;
 
-import java.util.Objects;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 
 /**
