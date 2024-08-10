@@ -8,8 +8,6 @@
 - [x] optional hyphenation
 - [ ] if nothing fits on the line, try to hyphenate, and if that doesn't work, just overflow
 - [ ] should dashes be placed within the text?
-- [ ] test hyphenation and optional hyphenation
-- [ ] spacers alongside words and inline text interface
 - [x] test hyphenation and optional hyphenation
 - [x] spacers alongside words and inline text interface
 - [x] word break
