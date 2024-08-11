@@ -89,14 +89,15 @@ public class ParagraphFormatter {
                 widthUsed -= lastWordWidthWithoutSpace;
             }
         }
-        if (words.isEmpty() && !this.words.isEmpty()) {
-            // No words could be fit on the line, but there's still words left.
-            words.add(this.words.removeFirst());
-        }
         
         if (this.paragraph.style.hyphenation.hyphenate && 
                 !this.words.isEmpty()) {
              this.hyphenate(widthUsed, words);
+        }
+        
+        if (words.isEmpty() && !this.words.isEmpty()) {
+            // No words could be fit on the line, but there's still words left.
+            words.add(this.words.removeFirst());
         }
         
         LineFormatter formatter = new LineFormatter(words, 
