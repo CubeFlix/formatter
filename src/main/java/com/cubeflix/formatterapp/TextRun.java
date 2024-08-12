@@ -42,4 +42,8 @@ public class TextRun implements InlineObject {
     public boolean isVisible() {
         return true;
     }
+    
+    public boolean forceWordBreak() {
+        return false;
+    }
 }

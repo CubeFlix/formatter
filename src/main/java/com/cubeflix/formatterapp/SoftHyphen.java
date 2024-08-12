@@ -26,4 +26,8 @@ public class SoftHyphen implements InlineObject {
     public boolean isVisible() {
         return false;
     }
+    
+    public boolean forceWordBreak() {
+        return false;
+    }
 }

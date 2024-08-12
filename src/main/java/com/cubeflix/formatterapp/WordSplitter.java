@@ -44,14 +44,20 @@ public class WordSplitter {
         Word lastWord = null;
         for (int i = 0; i < this.paragraph.objects.length; i++) {
             InlineObject object = paragraph.objects[i];
-            if (!object.getClass().equals(TextRun.class)) {
-                if (object.getClass().equals(WordBreak.class)) {
-                    if (lastWord != null) {
-                        this.words.add(lastWord);
-                        lastWord = null;
-                    }
-                    continue;
+            if (object.forceWordBreak()) {
+                // Force a word break.
+                if (lastWord != null) {
+                    this.words.add(lastWord);
                 }
+                lastWord = new Word(new ArrayList<>(), false, false);
+                lastWord.objects.add(object);
+                if (object.getClass().equals(TextRun.class)) {
+                    lastWord.runs.add((TextRun)object);
+                }
+                continue;
+            }
+
+            if (!object.getClass().equals(TextRun.class)) {
                 if (lastWord != null) {
                     lastWord.objects.add(object);
                 } else {

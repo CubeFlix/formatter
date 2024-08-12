@@ -8,8 +8,8 @@ package com.cubeflix.formatterapp;
  *
  * @author Kevin Chen
  */
-public class WordBreak implements InlineObject {
-    WordBreak() {
+public class LineBreak implements InlineObject {
+    LineBreak() {
         
     }
     

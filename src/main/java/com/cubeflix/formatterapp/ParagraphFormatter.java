@@ -61,9 +61,22 @@ public class ParagraphFormatter {
     private LineFormatter fitWordsOnLine() throws IOException {
         float widthUsed = 0;
         List<Word> words = new ArrayList<>();
+        
+        // Fit words.
         while (widthUsed <= this.layout.getWidth() &&
                 !this.words.isEmpty()) {
             Word word = this.words.removeFirst();
+            if (!word.objects.isEmpty() &&
+                    word.objects.getFirst().
+                            getClass().equals(LineBreak.class)) {
+                word.objects.removeFirst();
+                if (!word.objects.isEmpty()) {
+                    this.words.addFirst(word);
+                }
+                LineFormatter formatter = new LineFormatter(words, 
+                    this.paragraph.style);
+                return formatter;
+            }
             words.add(word);
             widthUsed += word.getCalculatedSize().width;
         }

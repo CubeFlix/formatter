@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Kevin Chen
  */
-public class Word implements InlineObject {
+public class Word {
     public List<TextRun> runs;
     public List<InlineObject> objects;
     public boolean spaceBefore;
