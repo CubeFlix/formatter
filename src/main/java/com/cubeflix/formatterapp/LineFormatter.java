@@ -49,12 +49,7 @@ public class LineFormatter {
     public void format() throws IOException {
         // We trim spaces on the line so that they aren't rendered and aren't
         // accounted for in the width calculation.
-        boolean spaceAfterLine = false;
-        try{
-        spaceAfterLine = this.words.getLast().spaceAfter;
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        boolean spaceAfterLine = this.words.getLast().spaceAfter;
         this.trimSpaces();
         this.recalculateSizes();
         this.calculateSpacing();
