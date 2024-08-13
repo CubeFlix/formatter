@@ -19,6 +19,11 @@ public class LineFormatter {
         return words;
     }
     private ParagraphStyle style;
+
+    public ParagraphStyle getStyle() {
+        return style;
+    }
+    
     private ParagraphLayout lineLayout;
     
     private LineFormatting formatting;
@@ -130,14 +135,6 @@ public class LineFormatter {
     }
     
     private void calculateJustifyAlign() {
-        // If the line uses less than half of the total width, format it as a
-        // left-aligned line.
-        if (this.getTotalWidth() / this.lineLayout.getWidth() <= 
-                this.style.hyphenation.widthRatioThreshold) {
-            this.calculateLeftAlign();
-            return;
-        }
-        
         // Count the number of spaces.
         int numSpaces = 0;
         for (Word word : this.words) {

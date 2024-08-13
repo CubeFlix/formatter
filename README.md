@@ -11,11 +11,14 @@
 - [x] test hyphenation and optional hyphenation
 - [x] spacers alongside words and inline text interface
 - [x] word break
-- [ ] newline
-- [ ] try only calling newline once in renderParagraph
-- [ ] the last line in a justified paragraph should be left-aligned
+- [x] newline
+- [x] the last line in a justified paragraph should be left-aligned
 - [ ] section (multi-paragraph) formatter that handles multiple pages
-- [ ] automatic syllable hyphenation
 - [ ] page break
 - [ ] handle columns
 - [ ] XML format reading
+
+# FUTURE TODO
+
+- [ ] try only calling newline once in renderParagraph
+- [ ] automatic syllable hyphenation

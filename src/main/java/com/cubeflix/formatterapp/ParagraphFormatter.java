@@ -312,6 +312,12 @@ public class ParagraphFormatter {
             this.lineFormatters.add(formatter);
         }
         
+        if (this.paragraph.style.alignment == ParagraphAlignment.JUSTIFY &&
+                !this.lineFormatters.isEmpty()) {
+            ParagraphStyle style = this.lineFormatters.getLast().getStyle();
+            style.alignment = ParagraphAlignment.LEFT;
+        }
+        
         if (heightUsed > this.layout.getHeight()) {
             this.unfitWords.addAll(this.lineFormatters.removeLast().getWords());
         }
