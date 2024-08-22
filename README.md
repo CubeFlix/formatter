@@ -13,7 +13,7 @@
 - [x] word break
 - [x] newline
 - [x] the last line in a justified paragraph should be left-aligned
-- [ ] section (multi-paragraph) formatter that handles multiple pages
+- [x] section (multi-paragraph) formatter that handles multiple pages
 - [ ] page break
 - [ ] text styles (color, kerning, underlines, etc.)
 - [ ] handle columns

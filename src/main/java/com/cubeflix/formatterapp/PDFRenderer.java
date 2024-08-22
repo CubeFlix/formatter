@@ -155,8 +155,6 @@ public class PDFRenderer {
 
                 float offsetX = target.x - this.cursor.x;
                 float offsetY = target.y - this.cursor.y;
-                System.out.printf("%f %f\n", line.start.x, line.start.y);
-                System.out.printf("%f %f\n", target.x, target.y);
                 contentStream.newLineAtOffset(offsetX, offsetY);
                 this.cursor = target;
                 
