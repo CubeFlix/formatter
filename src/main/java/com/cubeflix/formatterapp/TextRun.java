@@ -46,4 +46,11 @@ public class TextRun implements InlineObject {
     public boolean forceWordBreak() {
         return false;
     }
+    
+    public TextRun copy() {
+        return new TextRun(
+                this.text,
+                this.style
+        );
+    }
 }

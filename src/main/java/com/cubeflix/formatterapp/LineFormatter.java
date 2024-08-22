@@ -20,6 +20,10 @@ public class LineFormatter {
     }
     private ParagraphStyle style;
 
+    public void setStyle(ParagraphStyle style) {
+        this.style = style;
+    }
+
     public ParagraphStyle getStyle() {
         return style;
     }

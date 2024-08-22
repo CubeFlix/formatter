@@ -8,7 +8,7 @@ package com.cubeflix.formatterapp;
  *
  * @author Kevin Chen
  */
-public class InlineSpacer implements InlineObject {
+public class Spacer implements InlineObject, ParagraphStreamObject, Drawable {
     public float width = 0.0f;
     public float height = 0.0f;
 
@@ -20,11 +20,11 @@ public class InlineSpacer implements InlineObject {
         return height;
     }
     
-    InlineSpacer(float width) {
+    Spacer(float width) {
         this.width = width;
     }
     
-    InlineSpacer(float width, float height) {
+    Spacer(float width, float height) {
         this.width = width;
         this.height = height;
     }

@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Generates a formatted layout tree from a given paragraph and layout. 
+ * Generates a formatted layout tree on a single page from a given paragraph 
+ * and layout. 
  * @author Kevin Chen
  */
 public class ParagraphFormatter {
@@ -34,7 +35,11 @@ public class ParagraphFormatter {
     }
     
     public void format() throws IOException {
-        this.splitIntoWords();
+        if (this.paragraph instanceof OverflowParagraph) {
+            this.words = ((OverflowParagraph)this.paragraph).getWords();
+        } else {
+            this.splitIntoWords();
+        }
         this.calculateWordSizes();
         this.fitLines();
         this.formatLines();
@@ -314,8 +319,10 @@ public class ParagraphFormatter {
         
         if (this.paragraph.style.alignment == ParagraphAlignment.JUSTIFY &&
                 !this.lineFormatters.isEmpty()) {
-            ParagraphStyle style = this.lineFormatters.getLast().getStyle();
+            ParagraphStyle style = this.lineFormatters.getLast().
+                    getStyle().copy();
             style.alignment = ParagraphAlignment.LEFT;
+            this.lineFormatters.getLast().setStyle(style);
         }
         
         if (heightUsed > this.layout.getHeight()) {

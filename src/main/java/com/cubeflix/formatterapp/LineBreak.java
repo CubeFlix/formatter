@@ -8,7 +8,7 @@ package com.cubeflix.formatterapp;
  *
  * @author Kevin Chen
  */
-public class LineBreak implements InlineObject {
+public class LineBreak implements InlineObject, Drawable {
     LineBreak() {
         
     }

@@ -10,7 +10,7 @@ import java.io.IOException;
  *
  * @author Kevin Chen
  */
-public class SoftHyphen implements InlineObject {
+public class SoftHyphen implements InlineObject, Drawable {
     SoftHyphen() {
         
     }

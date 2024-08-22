@@ -26,4 +26,12 @@ public class ParagraphStyle {
         this.alignment = alignment;
         this.hyphenation = hyphenation;
     }
+    
+    public ParagraphStyle copy() {
+        return new ParagraphStyle(
+                this.leading,
+                this.alignment,
+                this.hyphenation
+        );
+    }
 }

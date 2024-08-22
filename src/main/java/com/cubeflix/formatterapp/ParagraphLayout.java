@@ -40,4 +40,11 @@ public class ParagraphLayout {
         this.start = start;
         this.end = end;
     }
+    
+    public ParagraphLayout copy() {
+        return new ParagraphLayout(
+                new Coordinate(this.start.x, this.start.y),
+                new Coordinate(this.end.x, this.end.y)
+        );
+    }
 }

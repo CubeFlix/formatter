@@ -15,10 +15,15 @@
 - [x] the last line in a justified paragraph should be left-aligned
 - [ ] section (multi-paragraph) formatter that handles multiple pages
 - [ ] page break
+- [ ] text styles (color, kerning, underlines, etc.)
 - [ ] handle columns
 - [ ] XML format reading
 
 # FUTURE TODO
 
 - [ ] try only calling newline once in renderParagraph
+- [ ] orphan handling
 - [ ] automatic syllable hyphenation
+- [ ] path-bounded paragraph layout
+- [ ] image and object word wrap (floating objects)
+- [ ] tables

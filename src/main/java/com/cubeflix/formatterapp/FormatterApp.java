@@ -5,6 +5,7 @@
 package com.cubeflix.formatterapp;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -60,12 +61,13 @@ public class FormatterApp {
         // System.out.println(height);
         */
         
+        /*
         TextStyle style1 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 12);
         // TextRun run1 = new TextRun("Hello1Hello2Hello3Hello4Hello5Hello6 Hello7Hello8Hello9Hello10Hello11Hello12 ", style1);
         // TextRun run2 = new TextRun("Hello4Hello5Hello6 Hello1Hello2Hello3Hello4Hello5Hello6 Hello1Hello2Hello3Hello4Hello5Hello6 Hello1Hello2Hello3Hello4Hello5Hello6", style1);
         TextRun run1 = new TextRun("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. ", style1);
         TextRun run2 = new TextRun("Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.", style1);
-        InlineObject[] runs = {run1, new LineBreak(), new InlineSpacer(40000.0f), run2};
+        InlineObject[] runs = {run1, new LineBreak(), new Spacer(40000.0f), run2};
         ParagraphStyle pgstyle = new ParagraphStyle(14.5f * 1000.0f, ParagraphAlignment.JUSTIFY, new HyphenationSettings(true, 0.95f));
         Paragraph pg = new Paragraph(runs, pgstyle);
         
@@ -85,8 +87,56 @@ public class FormatterApp {
         
         document.close();
         
+        */
         
+        TextStyle style1 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 26);
+        TextRun run1 = new TextRun("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. ", style1);
+        TextRun run2 = new TextRun("Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.", style1);
+        InlineObject[] runs1 = {new Spacer(40000.0f), run1};
+        InlineObject[] runs2 = {new Spacer(40000.0f), run2};
+        InlineObject[] runs3 = {new Spacer(40000.0f), run1.copy()};
+        InlineObject[] runs4 = {new Spacer(40000.0f), run2.copy()};
+        InlineObject[] runs5 = {new Spacer(40000.0f), run1.copy()};
+        InlineObject[] runs6 = {new Spacer(40000.0f), run2.copy()};
+        InlineObject[] runs7 = {new Spacer(40000.0f), run1.copy()};
+        InlineObject[] runs8 = {new Spacer(40000.0f), run2.copy()};
+        InlineObject[] runs9 = {new Spacer(40000.0f), run1.copy()};
+        InlineObject[] runs10 = {new Spacer(40000.0f), run2.copy()};
+        ParagraphStyle pgstyle = new ParagraphStyle(14.5f * 1000.0f / 12.0f * 20.0f, ParagraphAlignment.JUSTIFY, new HyphenationSettings(true, 0.95f));
+        List<ParagraphStreamObject> stream = new ArrayList<>();
+        stream.add((ParagraphStreamObject)(new Paragraph(runs1, pgstyle)));
+        stream.add((ParagraphStreamObject)(new Paragraph(runs2, pgstyle)));
+        stream.add((ParagraphStreamObject)(new Paragraph(runs3, pgstyle)));
+        stream.add((ParagraphStreamObject)(new Paragraph(runs4, pgstyle)));
+        stream.add((ParagraphStreamObject)(new Paragraph(runs5, pgstyle)));
+        stream.add((ParagraphStreamObject)(new Paragraph(runs6, pgstyle)));
+        stream.add((ParagraphStreamObject)(new Paragraph(runs7, pgstyle)));
+        stream.add((ParagraphStreamObject)(new Paragraph(runs8, pgstyle)));
+        stream.add((ParagraphStreamObject)(new Paragraph(runs9, pgstyle)));
+        stream.add((ParagraphStreamObject)(new Paragraph(runs10, pgstyle)));
         
-
+        Coordinate start = new Coordinate(14500, 14500);
+        Coordinate end = new Coordinate(500000, 600000);
+        ParagraphLayout layout = new ParagraphLayout(start, end);
+        List<List<ParagraphLayout>> streamlayout = new ArrayList<List<ParagraphLayout>>();
+        streamlayout.add(new ArrayList<ParagraphLayout>());
+        streamlayout.get(0).add(layout);
+        ParagraphStreamFormatter formatter = new ParagraphStreamFormatter(
+                new ParagraphStream(stream,
+                        new ParagraphStreamStyle(0.0f),
+                        (ParagraphStreamLayout)(new RepeatingParagraphStreamLayout(streamlayout))
+                )
+        );
+        formatter.format();
+        System.out.println(formatter.getFormatting());
+        
+        PDDocument document = new PDDocument();
+        PDFRenderer renderer = new PDFRenderer(document);
+        renderer.renderFormattedStream(formatter.getFormatting());
+        document.save("testrender.pdf");
+        PDFImageViewer viewer = new PDFImageViewer();
+        viewer.main(args, document);
+        
+        document.close();
     }
 }

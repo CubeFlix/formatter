@@ -17,10 +17,19 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
  */
 public class PDFRenderer {
     private final PDDocument document;
+    private List<PDPage> pages;
     private Coordinate cursor = null;
+    private PDPage currentPage = null;
+    private boolean textStarted;
     
     PDFRenderer(PDDocument document) {
         this.document = document;
+    }
+    
+    private PDPage requestNewPage() {
+        PDPage page = new PDPage();
+        this.document.addPage(page);
+        return page;
     }
     
     private List<InlineObject> joinAdjacentRunsInLine(LineFormatting line) {
@@ -67,7 +76,11 @@ public class PDFRenderer {
         return objects;
     }
     
-    public void renderParagraph(Paragraph paragraph, 
+    /*
+    TODO: render drawable, render drawable stream
+    */
+    
+    /*public void renderParagraph(Paragraph paragraph, 
             PDPage page, 
             ParagraphLayout layout) throws IOException {
         ParagraphFormatter formatter = new ParagraphFormatter(paragraph, 
@@ -84,6 +97,9 @@ public class PDFRenderer {
         this.cursor = new Coordinate(0, 0);
         for (LineFormatting line : lines) {
             Coordinate target = this.translateCoordinate(page, line.start);
+            // The start value points to the top left point of the line. We
+            // must translate the value to point to the baseline.
+            target.y += line.getHeight();
             float offsetX = target.x - this.cursor.x;
             float offsetY = target.y - this.cursor.y;
             contentStream.newLineAtOffset(offsetX, offsetY);
@@ -94,9 +110,85 @@ public class PDFRenderer {
         
         contentStream.endText();
         contentStream.close();
+    }*/
+    
+    public void renderFormattedStream(FormattedStream stream) 
+            throws IOException {
+        for (List<Formatted> streamPage : stream.stream) {
+            PDPage page = this.requestNewPage();
+            this.currentPage = page;
+            this.textStarted = false;
+            this.renderFormattedStreamPage(page, streamPage);
+        }
+    }
+        
+    private void renderFormattedStreamPage(PDPage page,
+            List<Formatted> objects) throws IOException {
+        PDPageContentStream contentStream = new PDPageContentStream(
+                this.document, 
+                page);
+        this.cursor = new Coordinate(0, 0);
+        for (Formatted object : objects) {
+            this.renderFormatted(contentStream, object);
+        }
+        if (this.textStarted) {
+            contentStream.endText();
+        }
+        contentStream.close();
     }
     
-    private void renderParagraphLine(PDPageContentStream contentStream,
+    private void renderFormatted(PDPageContentStream contentStream,
+            Formatted object) throws IOException {
+        switch (object) {
+            case LineFormatting line -> {
+                if (!this.textStarted) {
+                    contentStream.beginText();
+                    this.textStarted = true;
+                }
+                
+                // The start value points to the top left point of the line. 
+                // We must translate the value to point to the baseline.
+                line.start.y += line.getHeight();
+                Coordinate target = this.translateCoordinate(
+                        this.currentPage,
+                        line.start);
+
+                float offsetX = target.x - this.cursor.x;
+                float offsetY = target.y - this.cursor.y;
+                System.out.printf("%f %f\n", line.start.x, line.start.y);
+                System.out.printf("%f %f\n", target.x, target.y);
+                contentStream.newLineAtOffset(offsetX, offsetY);
+                this.cursor = target;
+                
+                this.renderLine(contentStream, line);
+            }
+            case FormattedDrawable drawable -> {
+                if (this.textStarted) {
+                    contentStream.endText();
+                }
+                this.renderFormattedDrawable(contentStream, drawable);
+            }
+            default -> {
+                throw new UnsupportedOperationException();
+            }
+        }
+    }
+    
+    private void renderFormattedDrawable(PDPageContentStream contentStream,
+            FormattedDrawable object) throws IOException {
+        Drawable drawable = object.object;
+        switch (drawable) {
+            case LineBreak _ -> {}
+            case SoftHyphen _ -> {}
+            case Spacer _ -> {}
+            case WordBreak _ -> {}
+            default -> {
+                throw new UnsupportedOperationException();
+            }
+        }
+    }
+    
+    private void renderLine(PDPageContentStream contentStream,
             LineFormatting line) throws IOException {
         if (line.overrideSpacing) {
             contentStream.setWordSpacing(line.spacingOverride / 1000.0f);
@@ -121,7 +213,7 @@ public class PDFRenderer {
                             line,
                             run);
                 }
-                case InlineSpacer spacer -> {
+                case Spacer spacer -> {
                     xOffset += spacer.width;
                     shouldStartNewLine = true;
                 }

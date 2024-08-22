@@ -8,7 +8,7 @@ package com.cubeflix.formatterapp;
  *
  * @author Kevin Chen
  */
-public class WordBreak implements InlineObject {
+public class WordBreak implements InlineObject, Drawable {
     WordBreak() {
         
     }

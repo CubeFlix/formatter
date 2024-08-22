@@ -4,6 +4,7 @@
  */
 package com.cubeflix.formatterapp;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +12,14 @@ import java.util.List;
  *
  * @author Kevin Chen
  */
-public class Paragraph {
+public class Paragraph implements ParagraphStreamObject {
     public InlineObject[] objects;
     public ParagraphStyle style;
     private List<TextRun> runs;
+    
+    Paragraph() {
+        
+    }
     
     Paragraph(InlineObject[] objects) {
         this.objects = objects;
@@ -42,5 +47,15 @@ public class Paragraph {
 
     public List<TextRun> getRuns() {
         return runs;
+    }
+    
+    public Paragraph copy() {
+        InlineObject[] objects = new InlineObject[this.objects.length];
+        for (int i = 0; i < this.objects.length; i++) {
+            objects[i] = this.objects[i];
+        }
+        Paragraph clone = new Paragraph(objects, this.style);
+        clone.populateRunsFromObjects();
+        return clone;
     }
 }
