@@ -6,6 +6,7 @@ package com.cubeflix.formatterapp;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -113,6 +114,7 @@ public class ParagraphFormatter {
              this.hyphenate(widthUsed, words);
         }
         
+        System.out.println(words.size());
         if (words.isEmpty() && !this.words.isEmpty()) {
             // No words could be fit on the line, but there's still words left.
             words.add(this.words.removeFirst());
@@ -164,6 +166,8 @@ public class ParagraphFormatter {
             if (object.getClass().equals(SoftHyphen.class)) {
                 // If the soft hyphen falls after a TextRun, add a hyphen to
                 // the end and test the width.
+                // Add the soft hyphen.
+                beforeHyphen.objects.add(object);
                 if (beforeHyphen.objects.getLast().getClass().
                         equals(TextRun.class)) {
                     TextRun last = ((TextRun)beforeHyphen.objects.getLast());
@@ -200,6 +204,7 @@ public class ParagraphFormatter {
                 // the word.
                 lastFitting.populateRunsFromObjects();
                 this.addHyphenToEnd(lastFitting);
+                lastFitting.setDidHyphenate(true);
                 words.add(lastFitting);
                 for (int j = 0; j < lastFitting.objects.size(); j++) {
                     word.objects.removeFirst();
@@ -306,6 +311,8 @@ public class ParagraphFormatter {
         this.addHyphenToEnd(fitting);
 
         fitting.calculateWordSize();
+        fitting.setDidHyphenate(true);
+        
         words.add(fitting);
     }
     
@@ -337,9 +344,27 @@ public class ParagraphFormatter {
         }
         
         if (heightUsed > this.layout.getHeight()) {
-            this.unfitWords.addAll(this.lineFormatters.removeLast().getWords());
-        }
-        this.unfitWords.addAll(this.words);
+            List<Word> lastLineWords = 
+                    this.lineFormatters.removeLast().getWords();
+            if (!lastLineWords.isEmpty() && 
+                    lastLineWords.getLast().isDidHyphenate()) {
+                // De-hyphenate the last word and connect it with the first 
+                // word of the word queue.
+                Word lastWord = lastLineWords.removeLast();
+                Word firstRemovedWord = this.words.removeFirst();
+                lastWord.objects.addAll(firstRemovedWord.objects);
+                lastWord.populateRunsFromObjects();
+                lastWord.calculateWordSize();
+                this.unfitWords.addAll(lastLineWords);
+                this.unfitWords.add(lastWord);
+                this.unfitWords.addAll(this.words);
+            } else {
+                this.unfitWords.addAll(lastLineWords);
+                this.unfitWords.addAll(this.words);
+            }
+        } else {
+            this.unfitWords.addAll(this.words);
+        } 
     }
     
     private void formatLines() throws IOException {

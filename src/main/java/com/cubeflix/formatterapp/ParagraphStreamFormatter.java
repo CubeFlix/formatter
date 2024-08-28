@@ -44,6 +44,8 @@ public class ParagraphStreamFormatter {
     }
     
     private void fitLayout() throws IOException {
+        // TODO: this just keeps running for some reason
+        // if run out of space, put spmeth g down
         while (!this.stream.objects.isEmpty()) {
             // Add a new page, if needed.
             if (this.pageIndex >= this.formatting.stream.size()) {
@@ -88,6 +90,9 @@ public class ParagraphStreamFormatter {
     private void nextPage() {
         int currentPage = this.pageIndex;
         while (this.pageIndex == currentPage) {
+            if (this.currentArea == null) {
+                return;
+            }
             this.nextRegion();
         }
     }

@@ -29,6 +29,8 @@ public class TextRun implements InlineObject {
     
     public float getWidth() throws IOException {
         return this.style.family.getStringWidth(this.text) * 
+                    this.style.size + 
+                    this.text.length() * this.style.characterSpacing * 
                     this.style.size;
     }
     

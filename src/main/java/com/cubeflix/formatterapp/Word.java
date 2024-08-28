@@ -18,6 +18,15 @@ public class Word {
     public boolean spaceBefore;
     public boolean spaceAfter;
     private WordSize calculatedSize;
+    private boolean didHyphenate = false;
+
+    public boolean isDidHyphenate() {
+        return didHyphenate;
+    }
+
+    public void setDidHyphenate(boolean didHyphenate) {
+        this.didHyphenate = didHyphenate;
+    }
 
     public WordSize getCalculatedSize() {
         return calculatedSize;
