@@ -19,6 +19,7 @@
 - [x] page break
 - [ ] text styles (color, kerning, underlines, etc.)
 - [ ] in ParagraphStyle, add setting for very last line
+- [ ] draw border and background with padding on paragraph stream regions
 - [ ] handle columns
 - [ ] XML format reading
 
