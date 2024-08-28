@@ -9,10 +9,12 @@ com\cubeflix\formatterapp\ParagraphAlignment.class
 com\cubeflix\formatterapp\ParagraphStreamObject.class
 com\cubeflix\formatterapp\ParagraphStyle.class
 com\cubeflix\formatterapp\ParagraphStreamLayout.class
+com\cubeflix\formatterapp\RegionBreak.class
 com\cubeflix\formatterapp\ParagraphStreamStyle.class
 com\cubeflix\formatterapp\TextRun.class
 com\cubeflix\formatterapp\TextStyle.class
 com\cubeflix\formatterapp\Drawable.class
+com\cubeflix\formatterapp\PageBreak.class
 com\cubeflix\formatterapp\FiniteParagraphStreamLayout.class
 com\cubeflix\formatterapp\ParagraphFormatter.class
 com\cubeflix\formatterapp\ParagraphStreamFormatter.class

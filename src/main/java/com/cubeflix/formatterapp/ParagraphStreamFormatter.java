@@ -51,9 +51,19 @@ public class ParagraphStreamFormatter {
             }
             
             ParagraphStreamObject object = 
-                    (Paragraph)this.stream.objects.removeFirst();
+                    (ParagraphStreamObject)this.stream.objects.removeFirst();
             if (object instanceof Drawable) {
-                this.outputToStream((Drawable)object);
+                switch (object) {
+                    case RegionBreak rb -> {
+                        this.nextRegion();
+                    }
+                    case PageBreak pb -> {
+                        this.nextPage();
+                    }
+                    default -> {
+                        this.outputToStream((Drawable)object);
+                    }
+                }
             }
             else if (!(object instanceof Paragraph)) {
                 // At this point, the only other thing the object could be is a
@@ -64,10 +74,21 @@ public class ParagraphStreamFormatter {
                 this.fitParagraph();
             }
             if (this.heightUsed > this.currentArea.getHeight()) {
-                this.currentArea = this.layout.requestNextArea();
-                this.pageIndex = this.layout.getPageIndex();
-                this.heightUsed = 0.0f;
+                this.nextRegion();
             }
+        }
+    }
+    
+    private void nextRegion() {
+        this.currentArea = this.layout.requestNextArea();
+        this.pageIndex = this.layout.getPageIndex();
+        this.heightUsed = 0.0f;
+    }
+    
+    private void nextPage() {
+        int currentPage = this.pageIndex;
+        while (this.pageIndex == currentPage) {
+            this.nextRegion();
         }
     }
     

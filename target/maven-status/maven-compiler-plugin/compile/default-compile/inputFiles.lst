@@ -12,6 +12,7 @@ C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubef
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\ParagraphLayout.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\WordSplitter.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\PDFRenderer.java
+C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\PageBreak.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\FormattedStream.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\WordBreak.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\ParagraphStreamFormatter.java
@@ -29,6 +30,7 @@ C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubef
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\LineFormatter.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\Paragraph.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\LineFormatting.java
+C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\RegionBreak.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\TextRun.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\ParagraphStyle.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\Spacer.java

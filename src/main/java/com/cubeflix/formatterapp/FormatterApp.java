@@ -105,6 +105,7 @@ public class FormatterApp {
         ParagraphStyle pgstyle = new ParagraphStyle(14.5f * 1000.0f / 12.0f * 20.0f, ParagraphAlignment.JUSTIFY, new HyphenationSettings(true, 0.95f));
         List<ParagraphStreamObject> stream = new ArrayList<>();
         stream.add((ParagraphStreamObject)(new Paragraph(runs1, pgstyle)));
+        stream.add((ParagraphStreamObject)(new PageBreak()));
         stream.add((ParagraphStreamObject)(new Paragraph(runs2, pgstyle)));
         stream.add((ParagraphStreamObject)(new Paragraph(runs3, pgstyle)));
         stream.add((ParagraphStreamObject)(new Paragraph(runs4, pgstyle)));
