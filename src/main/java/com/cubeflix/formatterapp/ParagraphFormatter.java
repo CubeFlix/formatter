@@ -130,6 +130,12 @@ public class ParagraphFormatter {
             }
             if (word.objects.get(i).getClass().equals(TextRun.class)) {
                 TextRun last = ((TextRun)word.objects.get(i));
+                if (last.text.endsWith(" ")) {
+                    break;
+                }
+                if (last.text.isEmpty()) {
+                    break;
+                }
                 last.text += "-";
             }
             break;
@@ -282,6 +288,11 @@ public class ParagraphFormatter {
         }
         
         if (fitting.objects.isEmpty()) {
+            return;
+        }
+        if (!fitting.objects.isEmpty() && 
+                fitting.objects.getLast().getClass().equals(TextRun.class) && 
+                ((TextRun)fitting.objects.getLast()).text.equals("")) {
             return;
         }
         fitting.populateRunsFromObjects();

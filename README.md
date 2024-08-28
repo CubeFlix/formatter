@@ -14,8 +14,11 @@
 - [x] newline
 - [x] the last line in a justified paragraph should be left-aligned
 - [x] section (multi-paragraph) formatter that handles multiple pages
+- [x] don't place hyphen if last character is space
+- [x] when hyphenation cannot fit a single character, its creating an empty run and adding a hyphen. If hyphenation doesn’t fit anything, it should quit
 - [ ] page break
 - [ ] text styles (color, kerning, underlines, etc.)
+- [ ] in ParagraphStyle, add setting for very last line
 - [ ] handle columns
 - [ ] XML format reading
 

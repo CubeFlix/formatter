@@ -76,42 +76,6 @@ public class PDFRenderer {
         return objects;
     }
     
-    /*
-    TODO: render drawable, render drawable stream
-    */
-    
-    /*public void renderParagraph(Paragraph paragraph, 
-            PDPage page, 
-            ParagraphLayout layout) throws IOException {
-        ParagraphFormatter formatter = new ParagraphFormatter(paragraph, 
-                layout);
-        formatter.format();
-        
-        PDPageContentStream contentStream = new PDPageContentStream(document, 
-                page);
-        
-        contentStream.beginText();
-        contentStream.setLeading(paragraph.style.leading / 1000.0f);
-        
-        List<LineFormatting> lines = formatter.getFormatting();
-        this.cursor = new Coordinate(0, 0);
-        for (LineFormatting line : lines) {
-            Coordinate target = this.translateCoordinate(page, line.start);
-            // The start value points to the top left point of the line. We
-            // must translate the value to point to the baseline.
-            target.y += line.getHeight();
-            float offsetX = target.x - this.cursor.x;
-            float offsetY = target.y - this.cursor.y;
-            contentStream.newLineAtOffset(offsetX, offsetY);
-            this.cursor = target;
-            
-            this.renderParagraphLine(contentStream, line);
-        }
-        
-        contentStream.endText();
-        contentStream.close();
-    }*/
-    
     public void renderFormattedStream(FormattedStream stream) 
             throws IOException {
         for (List<Formatted> streamPage : stream.stream) {
