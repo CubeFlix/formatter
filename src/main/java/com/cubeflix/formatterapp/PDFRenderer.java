@@ -191,6 +191,7 @@ public class PDFRenderer {
             TextRun run) throws IOException {
         float width = 0.0f;
         contentStream.setFont(run.style.family, run.style.size);
+        contentStream.setNonStrokingColor(run.style.color);
         contentStream.showText(run.text);
         
         // Calculate the width.

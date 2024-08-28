@@ -4,6 +4,7 @@
  */
 package com.cubeflix.formatterapp;
 
+import java.awt.Color;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 
 /**
@@ -14,6 +15,7 @@ public class TextStyle {
     public PDFont family;
     public float size;
     public float spacing;
+    public Color color = Color.BLACK;
     
     TextStyle(PDFont family, float size) {
         this.family = family;
@@ -25,6 +27,13 @@ public class TextStyle {
         this.family = family;
         this.size = size;
         this.spacing = spacing;
+    }
+    
+    TextStyle(PDFont family, float size, float spacing, Color color) {
+        this.family = family;
+        this.size = size;
+        this.spacing = spacing;
+        this.color = color;
     }
 
     @Override
