@@ -351,6 +351,7 @@ public class ParagraphFormatter {
                 // De-hyphenate the last word and connect it with the first 
                 // word of the word queue.
                 Word lastWord = lastLineWords.removeLast();
+                this.removeHyphenFromEnd(lastWord);
                 Word firstRemovedWord = this.words.removeFirst();
                 lastWord.objects.addAll(firstRemovedWord.objects);
                 lastWord.populateRunsFromObjects();
@@ -365,6 +366,22 @@ public class ParagraphFormatter {
         } else {
             this.unfitWords.addAll(this.words);
         } 
+    }
+    
+    private void removeHyphenFromEnd(Word word) {
+        for (int i = word.objects.size() - 1; i >= 0; i--) {
+            if (!word.objects.get(i).isVisible()) {
+                continue;
+            }
+            if (word.objects.get(i).getClass().equals(TextRun.class)) {
+                TextRun last = ((TextRun)word.objects.get(i));
+                if (!last.text.endsWith("-")) {
+                    break;
+                }
+                last.text = last.text.substring(0, last.text.length() - 1);
+            }
+            break;
+        }
     }
     
     private void formatLines() throws IOException {
