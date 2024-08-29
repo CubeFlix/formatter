@@ -92,7 +92,7 @@ public class FormatterApp {
         
         TextStyle style1 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 26);
         TextStyle style2 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 26);
-        style2.characterSpacing = 1000.0f;
+        style2.characterSpacing = 2000.0f;
         // style2.color = Color.BLUE;
         TextRun run1 = new TextRun("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. ", style1);
         TextRun run2 = new TextRun("Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.", style2);
@@ -109,7 +109,7 @@ public class FormatterApp {
         ParagraphStyle pgstyle = new ParagraphStyle(14.5f * 1000.0f / 12.0f * 20.0f, ParagraphAlignment.JUSTIFY, new HyphenationSettings(true, 0.95f));
         List<ParagraphStreamObject> stream = new ArrayList<>();
         stream.add((ParagraphStreamObject)(new Paragraph(runs1, pgstyle)));
-        stream.add((ParagraphStreamObject)(new PageBreak()));
+        // stream.add((ParagraphStreamObject)(new PageBreak()));
         stream.add((ParagraphStreamObject)(new Paragraph(runs2, pgstyle)));
         stream.add((ParagraphStreamObject)(new Paragraph(runs3, pgstyle)));
         stream.add((ParagraphStreamObject)(new Paragraph(runs4, pgstyle)));

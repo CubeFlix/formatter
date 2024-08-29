@@ -19,6 +19,7 @@
 - [x] page break
 - [x] de-hyphenate line before adding to unfit words
 - [x] weird infinite loop
+- [ ] the last line for a whole paragraph should be left-aligned, not just a paragraph on a page
 - [ ] text styles (color, kerning, underlines, etc.)
 - [ ] in ParagraphStyle, add setting for very last line
 - [ ] draw border and background with padding on paragraph stream regions

@@ -91,6 +91,7 @@ public class Word {
         if (this.spaceBefore) {
             width += this.runs.getFirst().style.spacing * 
                     this.runs.getFirst().style.size;
+            width += this.runs.getFirst().style.characterSpacing;
         }
         for (InlineObject object : this.objects) {
             width += object.getWidth();
@@ -98,6 +99,7 @@ public class Word {
         if (this.spaceAfter) {
             width += this.runs.getLast().style.spacing * 
                     this.runs.getLast().style.size;
+            width += this.runs.getLast().style.characterSpacing;
         }
         
         return width;
