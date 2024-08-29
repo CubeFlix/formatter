@@ -360,6 +360,9 @@ public class ParagraphFormatter {
         
         if (this.paragraph.style.alignment == ParagraphAlignment.JUSTIFY &&
                 !this.lineFormatters.isEmpty()) {
+            if (this.unfitWords != null && !this.unfitWords.isEmpty()) {
+                return;
+            }
             ParagraphStyle style = this.lineFormatters.getLast().
                     getStyle().copy();
             style.alignment = ParagraphAlignment.LEFT;
