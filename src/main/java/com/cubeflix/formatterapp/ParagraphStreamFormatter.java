@@ -75,9 +75,11 @@ public class ParagraphStreamFormatter {
                 this.currentParagraph = ((Paragraph)object).copy();
                 this.fitParagraph();
             }
-            if (this.heightUsed > this.currentArea.getHeight()) {
+            /* if (this.heightUsed > this.currentArea.getHeight()) {
+                // TODO: integrate EmptyVerticalOverflowFallback
+                // if (this.)
                 this.nextRegion();
-            }
+            } */
         }
     }
     
@@ -131,10 +133,23 @@ public class ParagraphStreamFormatter {
             );
             this.stream.objects.addFirst(unfit);
         }
+        
+        // If no lines were fit, move on.
+        if (formattedLines.isEmpty()) {
+            this.nextRegion();
+        }
     }
     
     private void outputToStream(Drawable object) throws IOException {
         // TODO: allow for x-positioning of drawables
+        if (this.heightUsed + object.getHeight() > 
+                this.currentArea.getHeight()) {
+            // This won't fit, so move on and return the object to the stream.
+            this.stream.objects.addFirst((ParagraphStreamObject)object);
+            this.nextRegion();
+            return;
+        }
+
         Coordinate pos = new Coordinate(0, this.currentArea.getStart().y +
                         this.heightUsed);
         FormattedDrawable formattedObject = new FormattedDrawable(

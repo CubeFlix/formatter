@@ -114,7 +114,11 @@ public class ParagraphFormatter {
              this.hyphenate(widthUsed, words);
         }
         
-        System.out.println(words.size());
+        System.out.printf("words: %d, remaining: %d\n", words.size(), this.words.size());
+        if (words.size() == 3 && this.words.size() == 50) {
+            // TODO: why is it vertically overflowing anyways?
+            System.out.printf("stop");
+        }
         if (words.isEmpty() && !this.words.isEmpty()) {
             // No words could be fit on the line, but there's still words left.
             words.add(this.words.removeFirst());
@@ -335,15 +339,8 @@ public class ParagraphFormatter {
             this.lineFormatters.add(formatter);
         }
         
-        if (this.paragraph.style.alignment == ParagraphAlignment.JUSTIFY &&
+        if (heightUsed > this.layout.getHeight() && 
                 !this.lineFormatters.isEmpty()) {
-            ParagraphStyle style = this.lineFormatters.getLast().
-                    getStyle().copy();
-            style.alignment = ParagraphAlignment.LEFT;
-            this.lineFormatters.getLast().setStyle(style);
-        }
-        
-        if (heightUsed > this.layout.getHeight()) {
             List<Word> lastLineWords = 
                     this.lineFormatters.removeLast().getWords();
             if (!lastLineWords.isEmpty() && 
@@ -365,7 +362,15 @@ public class ParagraphFormatter {
             }
         } else {
             this.unfitWords.addAll(this.words);
-        } 
+        }
+        
+        if (this.paragraph.style.alignment == ParagraphAlignment.JUSTIFY &&
+                !this.lineFormatters.isEmpty()) {
+            ParagraphStyle style = this.lineFormatters.getLast().
+                    getStyle().copy();
+            style.alignment = ParagraphAlignment.LEFT;
+            this.lineFormatters.getLast().setStyle(style);
+        }
     }
     
     private void removeHyphenFromEnd(Word word) {

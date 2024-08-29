@@ -18,7 +18,7 @@
 - [x] when hyphenation cannot fit a single character, its creating an empty run and adding a hyphen. If hyphenation doesn’t fit anything, it should quit
 - [x] page break
 - [x] de-hyphenate line before adding to unfit words
-- [ ] weird infinite loop
+- [x] weird infinite loop
 - [ ] text styles (color, kerning, underlines, etc.)
 - [ ] in ParagraphStyle, add setting for very last line
 - [ ] draw border and background with padding on paragraph stream regions
