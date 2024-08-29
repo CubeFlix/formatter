@@ -114,11 +114,6 @@ public class ParagraphFormatter {
              this.hyphenate(widthUsed, words);
         }
         
-        System.out.printf("words: %d, remaining: %d\n", words.size(), this.words.size());
-        if (words.size() == 3 && this.words.size() == 50) {
-            // TODO: why is it vertically overflowing anyways?
-            System.out.printf("stop");
-        }
         if (words.isEmpty() && !this.words.isEmpty()) {
             // No words could be fit on the line, but there's still words left.
             words.add(this.words.removeFirst());

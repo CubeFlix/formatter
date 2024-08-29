@@ -44,7 +44,6 @@ public class ParagraphStreamFormatter {
     }
     
     private void fitLayout() throws IOException {
-        // TODO: this just keeps running for some reason
         // if run out of space, put spmeth g down
         while (!this.stream.objects.isEmpty()) {
             // Add a new page, if needed.
@@ -75,11 +74,6 @@ public class ParagraphStreamFormatter {
                 this.currentParagraph = ((Paragraph)object).copy();
                 this.fitParagraph();
             }
-            /* if (this.heightUsed > this.currentArea.getHeight()) {
-                // TODO: integrate EmptyVerticalOverflowFallback
-                // if (this.)
-                this.nextRegion();
-            } */
         }
     }
     
