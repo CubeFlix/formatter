@@ -193,7 +193,6 @@ public class PDFRenderer {
         contentStream.setFont(run.style.family, run.style.size);
         contentStream.setNonStrokingColor(run.style.color);
         contentStream.setCharacterSpacing(run.style.characterSpacing / 1000.0f);
-        // TODO: handle character spacing in formatter
         contentStream.showText(run.text);
         
         // Calculate the width.
