@@ -109,7 +109,7 @@ public class ParagraphFormatter {
         
         if (this.paragraph.style.hyphenation.hyphenate && 
                 !this.words.isEmpty()) {
-             this.hyphenate(widthUsed, words);
+            this.hyphenate(widthUsed, words);
         }
         
         if (words.isEmpty() && !this.words.isEmpty()) {
@@ -289,12 +289,12 @@ public class ParagraphFormatter {
             }
         }
         
-        if (fitting.objects.isEmpty()) {
-            return;
-        }
         if (!fitting.objects.isEmpty() && 
                 fitting.objects.getLast().getClass().equals(TextRun.class) && 
                 ((TextRun)fitting.objects.getLast()).text.equals("")) {
+            fitting.objects.removeLast();
+        }
+        if (fitting.objects.isEmpty()) {
             return;
         }
         fitting.populateRunsFromObjects();
@@ -330,13 +330,14 @@ public class ParagraphFormatter {
             formatter.setLineLayout(lineLayout);
             formatter.format();
             heightUsed += formatter.getFormatting().getHeight();
-            if (!this.words.isEmpty()) {
-                // On all but the last line, add the trailing line height.
-                heightUsed += this.paragraph.style.leading;
-            }
+            heightUsed += this.paragraph.style.leading;
             
             this.lineFormatters.add(formatter);
         }
+        
+        // Remove the trailing line height, because this is the last line in
+        // the layout region.
+        heightUsed -= this.paragraph.style.leading;
         
         if (heightUsed > this.layout.getHeight() && 
                 !this.lineFormatters.isEmpty()) {

@@ -22,7 +22,8 @@
 - [x] the last line for a whole paragraph should be left-aligned, not just a paragraph on a page
 - [x] paragraph stream formatter putting inconsistant number of lines on page
 - [x] y-position calculation is incorrect for paragraphs: should not be based on line height but rather ascent/descent
-- [ ] test paragraph spacing
+- [ ] paragraph spacing not working
+- [x] hyphenation cutting off text
 - [ ] text styles (color, kerning, underlines, etc.)
 - [ ] in ParagraphStyle, add setting for very last line
 - [ ] draw border and background with padding on paragraph stream regions

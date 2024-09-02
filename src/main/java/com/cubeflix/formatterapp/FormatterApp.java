@@ -130,7 +130,7 @@ public class FormatterApp {
         streamlayout.get(0).add(layout);
         ParagraphStreamFormatter formatter = new ParagraphStreamFormatter(
                 new ParagraphStream(stream,
-                        new ParagraphStreamStyle(0.0f),
+                        new ParagraphStreamStyle(50000.0f),
                         (ParagraphStreamLayout)(new RepeatingParagraphStreamLayout(streamlayout))
                 )
         );
