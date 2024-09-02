@@ -5,7 +5,6 @@
 package com.cubeflix.formatterapp;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -30,50 +29,6 @@ public class PDFRenderer {
         PDPage page = new PDPage();
         this.document.addPage(page);
         return page;
-    }
-    
-    private List<InlineObject> joinAdjacentRunsInLine(LineFormatting line) {
-        List<InlineObject> objects = new ArrayList<>();
-        TextRun currentRun = null;
-        for (Word word : line.words) {
-            if (currentRun != null && word.spaceBefore) {
-                currentRun.text = " " + currentRun.text;
-            }
-            for (InlineObject object : word.objects) {
-                if (!object.getClass().equals(TextRun.class)) {
-                    if (!object.isVisible()) {
-                        continue;
-                    }
-                    if (currentRun != null) {
-                        objects.add((InlineObject)currentRun);
-                        currentRun = null;
-                    }
-                    objects.add(object);
-                    continue;
-                }
-                TextRun run = (TextRun)object;
-                if (currentRun == null) {
-                    currentRun = new TextRun(run.text, run.style);
-                    if (word.spaceBefore) {
-                        currentRun.text = " " + currentRun.text;
-                    }
-                    continue;
-                } 
-                if (currentRun.style.equals(run.style)) {
-                    currentRun.text += run.text;
-                } else {
-                    objects.add((TextRun)currentRun);
-                    currentRun = new TextRun(run.text, run.style);
-                }
-            }
-            if (word.spaceAfter) {
-                currentRun.text += " ";
-            }
-        }
-        if (currentRun != null) {
-            objects.add((InlineObject)currentRun);
-        }
-        return objects;
     }
     
     public void renderFormattedStream(FormattedStream stream) 
@@ -112,10 +67,13 @@ public class PDFRenderer {
                 
                 // The start value points to the top left point of the line. 
                 // We must translate the value to point to the baseline.
-                line.start.y += line.getHeight();
+                Coordinate start = new Coordinate(
+                        line.start.x,
+                        line.calculateBaseline()
+                );
                 Coordinate target = this.translateCoordinate(
                         this.currentPage,
-                        line.start);
+                        start);
 
                 float offsetX = target.x - this.cursor.x;
                 float offsetY = target.y - this.cursor.y;
@@ -155,7 +113,7 @@ public class PDFRenderer {
         if (line.overrideSpacing) {
             contentStream.setWordSpacing(line.spacingOverride / 1000.0f);
         }
-        List<InlineObject> objects = this.joinAdjacentRunsInLine(line);
+        List<InlineObject> objects = line.objects;
         float xOffset = 0.0f;
         boolean shouldStartNewLine = false;
         for (int i = 0; i < objects.size(); i++) {

@@ -1,6 +1,7 @@
 com\cubeflix\formatterapp\Word.class
 com\cubeflix\formatterapp\WordBreak.class
 com\cubeflix\formatterapp\FormatterApp.class
+com\cubeflix\formatterapp\TextDecorationType.class
 com\cubeflix\formatterapp\Formatted.class
 com\cubeflix\formatterapp\WordSize.class
 com\cubeflix\formatterapp\ParagraphStream.class
@@ -14,6 +15,7 @@ com\cubeflix\formatterapp\LineFormatter$1.class
 com\cubeflix\formatterapp\ParagraphStyle.class
 com\cubeflix\formatterapp\ParagraphStreamLayout.class
 com\cubeflix\formatterapp\HyphenationSettings.class
+com\cubeflix\formatterapp\LineStyle.class
 com\cubeflix\formatterapp\RegionBreak.class
 com\cubeflix\formatterapp\ParagraphFormatter$1.class
 com\cubeflix\formatterapp\ParagraphStreamStyle.class
@@ -21,6 +23,7 @@ com\cubeflix\formatterapp\TextRun.class
 com\cubeflix\formatterapp\TextStyle.class
 com\cubeflix\formatterapp\InlineObject.class
 com\cubeflix\formatterapp\HyphenationFallback.class
+com\cubeflix\formatterapp\LineStrokeType.class
 com\cubeflix\formatterapp\Drawable.class
 com\cubeflix\formatterapp\PageBreak.class
 com\cubeflix\formatterapp\PDFRenderer.class
@@ -31,6 +34,7 @@ com\cubeflix\formatterapp\Coordinate.class
 com\cubeflix\formatterapp\LineBreak.class
 com\cubeflix\formatterapp\LineFormatter.class
 com\cubeflix\formatterapp\RepeatingParagraphStreamLayout.class
+com\cubeflix\formatterapp\TextDecoration.class
 com\cubeflix\formatterapp\OverflowParagraph.class
 com\cubeflix\formatterapp\FormattedStream.class
 com\cubeflix\formatterapp\SoftHyphen.class

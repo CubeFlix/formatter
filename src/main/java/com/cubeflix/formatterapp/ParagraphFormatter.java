@@ -42,7 +42,6 @@ public class ParagraphFormatter {
         }
         this.calculateWordSizes();
         this.fitLines();
-        this.formatLines();
         
         this.formatting = new ArrayList<>();
         for (LineFormatter formatter : this.lineFormatters) {
@@ -237,7 +236,7 @@ public class ParagraphFormatter {
         // Try to fit objects on the line.
         Word word = this.words.removeFirst();
         Word fitting = new Word(new ArrayList<>(), word.spaceBefore, false);
-        while (widthUsed < this.layout.getWidth() && word.objects.size() > 0) {
+        while (widthUsed < this.layout.getWidth() && !word.objects.isEmpty()) {
             InlineObject object = word.objects.getFirst();
             if (object.getClass().equals(TextRun.class)) {
                 // Try to fit individual characters on the line.
@@ -329,7 +328,13 @@ public class ParagraphFormatter {
                     this.layout.getStart().y + heightUsed + height);
             ParagraphLayout lineLayout = new ParagraphLayout(start, end);
             formatter.setLineLayout(lineLayout);
-            heightUsed += this.paragraph.style.leading;
+            formatter.format();
+            heightUsed += formatter.getFormatting().getHeight();
+            if (!this.words.isEmpty()) {
+                // On all but the last line, add the trailing line height.
+                heightUsed += this.paragraph.style.leading;
+            }
+            
             this.lineFormatters.add(formatter);
         }
         
@@ -344,11 +349,12 @@ public class ParagraphFormatter {
                 Word lastWord = lastLineWords.removeLast();
                 this.removeHyphenFromEnd(lastWord);
                 Word firstRemovedWord = this.words.removeFirst();
-                lastWord.objects.addAll(firstRemovedWord.objects);
-                lastWord.populateRunsFromObjects();
-                lastWord.calculateWordSize();
+                firstRemovedWord.objects.addAll(0, lastWord.objects);
+                firstRemovedWord.spaceBefore = lastWord.spaceBefore;
+                firstRemovedWord.populateRunsFromObjects();
+                firstRemovedWord.calculateWordSize();
                 this.unfitWords.addAll(lastLineWords);
-                this.unfitWords.add(lastWord);
+                this.unfitWords.add(firstRemovedWord);
                 this.unfitWords.addAll(this.words);
             } else {
                 this.unfitWords.addAll(lastLineWords);
@@ -367,6 +373,7 @@ public class ParagraphFormatter {
                     getStyle().copy();
             style.alignment = ParagraphAlignment.LEFT;
             this.lineFormatters.getLast().setStyle(style);
+            this.lineFormatters.getLast().format();
         }
     }
     
@@ -383,12 +390,6 @@ public class ParagraphFormatter {
                 last.text = last.text.substring(0, last.text.length() - 1);
             }
             break;
-        }
-    }
-    
-    private void formatLines() throws IOException {
-        for (LineFormatter formatter : this.lineFormatters) {
-            formatter.format();
         }
     }
 }

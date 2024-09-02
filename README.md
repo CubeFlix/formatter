@@ -20,7 +20,8 @@
 - [x] de-hyphenate line before adding to unfit words
 - [x] weird infinite loop
 - [x] the last line for a whole paragraph should be left-aligned, not just a paragraph on a page
-- [ ] paragraph stream formatter putting inconsistant number of lines on page
+- [x] paragraph stream formatter putting inconsistant number of lines on page
+- [x] y-position calculation is incorrect for paragraphs: should not be based on line height but rather ascent/descent
 - [ ] test paragraph spacing
 - [ ] text styles (color, kerning, underlines, etc.)
 - [ ] in ParagraphStyle, add setting for very last line

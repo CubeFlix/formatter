@@ -34,7 +34,7 @@ public class TextRun implements InlineObject {
     }
     
     public float getHeight() throws IOException {
-        float height = this.style.family.getFontDescriptor().getAscent() + 
+        float height = this.style.family.getFontDescriptor().getAscent() - 
                             this.style.family.getFontDescriptor().getDescent();
         height *= this.style.size;
         return height;

@@ -63,8 +63,8 @@ public class LineFormatter {
         this.recalculateSizes();
         this.calculateSpacing();
         this.words.getLast().spaceAfter = spaceAfterLine;
-        
-        this.formatting.words = words;
+        List<InlineObject> objects = this.joinAdjacentRunsInLine();
+        this.formatting.objects = objects;
     }
     
     /**
@@ -157,5 +157,49 @@ public class LineFormatter {
                     this.getTotalWidth()) / (float)(numSpaces);
         }
         this.formatting = new LineFormatting(start, spacing);
+    }
+    
+    private List<InlineObject> joinAdjacentRunsInLine() {
+        List<InlineObject> objects = new ArrayList<>();
+        TextRun currentRun = null;
+        for (Word word : this.words) {
+            if (currentRun != null && word.spaceBefore) {
+                currentRun.text = " " + currentRun.text;
+            }
+            for (InlineObject object : word.objects) {
+                if (!object.getClass().equals(TextRun.class)) {
+                    if (!object.isVisible()) {
+                        continue;
+                    }
+                    if (currentRun != null) {
+                        objects.add((InlineObject)currentRun);
+                        currentRun = null;
+                    }
+                    objects.add(object);
+                    continue;
+                }
+                TextRun run = (TextRun)object;
+                if (currentRun == null) {
+                    currentRun = new TextRun(run.text, run.style);
+                    if (word.spaceBefore) {
+                        currentRun.text = " " + currentRun.text;
+                    }
+                    continue;
+                } 
+                if (currentRun.style.equals(run.style)) {
+                    currentRun.text += run.text;
+                } else {
+                    objects.add((TextRun)currentRun);
+                    currentRun = new TextRun(run.text, run.style);
+                }
+            }
+            if (word.spaceAfter) {
+                currentRun.text += " ";
+            }
+        }
+        if (currentRun != null) {
+            objects.add((InlineObject)currentRun);
+        }
+        return objects;
     }
 }

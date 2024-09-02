@@ -1,9 +1,11 @@
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\ParagraphStream.java
+C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\TextDecorationType.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\WordSize.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\InlineObject.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\Drawable.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\ParagraphStreamLayout.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\HyphenationSettings.java
+C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\LineStyle.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\ParagraphStreamObject.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\SoftHyphen.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\HyphenationFallback.java
@@ -13,12 +15,14 @@ C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubef
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\WordSplitter.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\PDFRenderer.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\PageBreak.java
+C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\TextDecoration.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\FormattedStream.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\WordBreak.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\ParagraphStreamFormatter.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\ParagraphAlignment.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\FormatterApp.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\PDFImageViewer.java
+C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\LineStrokeType.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\ParagraphFormatter.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\TextStyle.java
 C:\Users\Kevin Chen\Documents\NetBeansProjects\formatter\src\main\java\com\cubeflix\formatterapp\FiniteParagraphStreamLayout.java

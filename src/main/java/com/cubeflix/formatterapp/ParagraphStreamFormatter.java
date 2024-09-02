@@ -44,7 +44,6 @@ public class ParagraphStreamFormatter {
     }
     
     private void fitLayout() throws IOException {
-        // if run out of space, put spmeth g down
         while (!this.stream.objects.isEmpty()) {
             // Add a new page, if needed.
             if (this.pageIndex >= this.formatting.stream.size()) {
@@ -110,14 +109,9 @@ public class ParagraphStreamFormatter {
         List<LineFormatting> formattedLines = formatter.getFormatting();
         for (LineFormatting line : formattedLines) {
             this.formatting.stream.get(pageIndex).add((Formatted)line);
+            this.heightUsed += line.getHeight();
         }
-        float totalHeight = 0.0f;
-        if (!formattedLines.isEmpty()) {
-            LineFormatting lastLine = formattedLines.getLast();
-            totalHeight = lastLine.start.y + lastLine.getHeight();
-        }
-        this.heightUsed += totalHeight;
-
+        
         // Return the unformatted words to the stream.
         if (formatter.getUnfitWords() != null && 
                 !formatter.getUnfitWords().isEmpty()) {

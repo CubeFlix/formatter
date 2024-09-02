@@ -15,7 +15,7 @@ public class LineFormatting implements Formatted {
     public Coordinate start;
     public boolean overrideSpacing = false;
     public float spacingOverride = 0;
-    public List<Word> words;
+    public List<InlineObject> objects;
     
     LineFormatting(Coordinate start) {
         this.start = start;
@@ -33,22 +33,38 @@ public class LineFormatting implements Formatted {
     
     public float getWidth() throws IOException {
         float width = 0.0f;
-        for (Word word : this.words) {
-            width += word.getWidth();
+        for (InlineObject object : this.objects) {
+            width += object.getWidth();
         }
         return width;
     }
     
     public float getHeight() throws IOException {
         float height = 0.0f;
-        for (Word word : this.words) {
-            word.calculateWordSize();
-            height = Math.max(height, word.getHeight());
+        for (InlineObject object : this.objects) {
+            height = Math.max(height, object.getHeight());
         }
         return height;
     }
     
     public Coordinate getStart() {
         return this.start;
+    }
+    
+    public float calculateBaseline() throws IOException {
+        float maxAscent = 0.0f;
+        for (InlineObject object : this.objects) {
+            if (object.getClass().equals(TextRun.class)) {
+                TextRun run = (TextRun)object;
+                maxAscent = Math.max(maxAscent, 
+                        run.style.family.getFontDescriptor().getAscent() * 
+                                run.style.size);
+            } else {
+                maxAscent = Math.max(maxAscent, object.getHeight());
+            }
+        }
+        
+        float baseline = this.start.y + maxAscent;
+        return baseline;
     }
 }
