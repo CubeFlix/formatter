@@ -98,6 +98,7 @@ public class ParagraphStreamFormatter {
         area.getStart().y += heightUsed;
         if (heightUsed > 0.0f) {
             area.getStart().y += this.style.spacing;
+            heightUsed += this.style.spacing;
         }
         ParagraphFormatter formatter = new ParagraphFormatter(
                 this.currentParagraph,

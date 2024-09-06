@@ -90,8 +90,8 @@ public class FormatterApp {
         
         */
         
-        TextStyle style1 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 26);
-        TextStyle style2 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 26);
+        TextStyle style1 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 14);
+        TextStyle style2 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 14);
         TextStyle style3 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 50);
         style2.characterSpacing = 2000.0f;
         // style2.color = Color.BLUE;
