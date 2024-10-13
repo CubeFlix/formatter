@@ -24,11 +24,18 @@
 - [x] y-position calculation is incorrect for paragraphs: should not be based on line height but rather ascent/descent
 - [x] paragraph spacing not working
 - [x] hyphenation cutting off text
-- [ ] text styles (color, kerning, underlines, etc.)
+- [x] text styles (color, kerning, underlines, etc.)
 - [ ] in ParagraphStyle, add setting for very last line
-- [ ] draw border and background with padding on paragraph stream regions
+- [ ] add setting to configure if: hyphenation should add hyphen to special characters
+- [ ] text stroking modes (fill and stroke color)
+- [ ] perhaps refactor fitWordsOnLine to its own class that fits words into a certain distance
+- [ ] drawing other line styles
 - [ ] handle columns
+- [ ] drop caps
+- [ ] tab stops
+- [ ] draw border and background with padding on paragraph stream regions
 - [ ] XML format reading
+- [ ] tables
 
 # FUTURE TODO
 
@@ -37,4 +44,3 @@
 - [ ] automatic syllable hyphenation
 - [ ] path-bounded paragraph layout
 - [ ] image and object word wrap (floating objects)
-- [ ] tables

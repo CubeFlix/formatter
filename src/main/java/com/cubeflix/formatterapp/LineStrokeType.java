@@ -9,5 +9,8 @@ package com.cubeflix.formatterapp;
  * @author Kevin Chen
  */
 public enum LineStrokeType {
-    
+    NORMAL,
+    DASHED,
+    DOTTED,
+    WAVY
 }

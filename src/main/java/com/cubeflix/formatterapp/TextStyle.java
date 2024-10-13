@@ -17,6 +17,7 @@ public class TextStyle {
     public float spacing;
     public Color color = Color.BLACK;
     public float characterSpacing = 0.0f;
+    public TextDecoration textDecoration = null;
     
     TextStyle(PDFont family, float size) {
         this.family = family;

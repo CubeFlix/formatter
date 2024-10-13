@@ -92,6 +92,8 @@ public class FormatterApp {
         
         TextStyle style1 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 14);
         TextStyle style2 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 14);
+        style2.textDecoration = new TextDecoration(TextDecorationType.UNDERLINE, new LineStyle(LineStrokeType.NORMAL, Color.BLUE, 1.0f));
+        style1.textDecoration = new TextDecoration(TextDecorationType.UNDERLINE, new LineStyle(LineStrokeType.NORMAL, Color.BLUE, 1.0f));
         TextStyle style3 = new TextStyle(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 50);
         style2.characterSpacing = 2000.0f;
         // style2.color = Color.BLUE;

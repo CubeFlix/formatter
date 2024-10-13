@@ -4,10 +4,20 @@
  */
 package com.cubeflix.formatterapp;
 
+import java.awt.Color;
+
 /**
  *
  * @author Kevin Chen
  */
 public class LineStyle {
+    public LineStrokeType strokeType;
+    public Color color;
+    public float thickness;
     
+    public LineStyle(LineStrokeType strokeType, Color color, float thickness) {
+        this.strokeType = strokeType;
+        this.color = color;
+        this.thickness = thickness;
+    }
 }

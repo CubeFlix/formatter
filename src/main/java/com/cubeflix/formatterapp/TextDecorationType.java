@@ -9,7 +9,6 @@ package com.cubeflix.formatterapp;
  * @author Kevin Chen
  */
 public enum TextDecorationType {
-    NONE,
     UNDERLINE,
     STRIKETHROUGH
 }

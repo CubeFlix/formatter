@@ -153,7 +153,7 @@ public class LineFormatter {
         Coordinate start = this.lineLayout.getStart();
         float spacing = 0;
         if (numSpaces > 0) {
-            spacing = (this.lineLayout.getWidth()- 
+            spacing = (this.lineLayout.getWidth() - 
                     this.getTotalWidth()) / (float)(numSpaces);
         }
         this.formatting = new LineFormatting(start, spacing);

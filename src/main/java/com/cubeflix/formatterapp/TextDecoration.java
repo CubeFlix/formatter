@@ -12,7 +12,18 @@ import java.awt.Color;
  */
 public class TextDecoration {
     public TextDecorationType type;
-    public float lineThickness;
-    public Color color;
-    public float segmentLength;
+    public LineStyle style;
+    public float yOffset = 0.0f;
+    
+    public TextDecoration(TextDecorationType type, LineStyle style) {
+        this.type = type;
+        this.style = style;
+    }
+    
+    public TextDecoration(TextDecorationType type, LineStyle style, 
+            float yOffset) {
+        this.type = type;
+        this.style = style;
+        this.yOffset = yOffset;
+    }
 }
